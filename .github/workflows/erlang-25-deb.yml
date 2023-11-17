@@ -1,0 +1,55 @@
+name: Build Erlang 25 Debian Packages
+on:
+  workflow_dispatch:
+    inputs:
+      erlang_tag:
+        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        required: true
+        type: string
+
+concurrency:
+  group: erlang-25-deb
+
+env:
+  ERLANG_TAG: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
+  GIT_AUTHOR_NAME: ${{ secrets.RABBITMQ_CI_USERNAME }}
+  GIT_AUTHOR_EMAIL: ${{ secrets.RABBITMQ_CI_EMAIL }}
+
+jobs:
+  build-erlang-25-ubuntu-22.04:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out Erlang OTP source code
+        uses: actions/checkout@v4
+        with:
+          repository: erlang/otp
+          ref: ${{ env.ERLANG_TAG }}
+          path: 'erlang-sources'
+      - name: Check out Erlang Debian package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/erlang-debian-package
+          ref: 'OTP-25.x/ubuntu/22.04-test'
+          path: 'package-sources'
+          ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
+      - name: Update package
+        run: ci/update-package.sh
+      - name: Push Changes to package repository
+        working-directory: 'package-sources'
+        run: |
+          git push origin OTP-25.x/ubuntu/22.04-test
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      - name: Build package
+        env:
+          SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+        run: ci/build-package.sh
+      - name: List package files
+        run: |
+          ls -al packages
+
+

@@ -1,4 +1,4 @@
-name: Build Erlang 25 for Debian Trixie
+name: Build Erlang 26 for Ubuntu 22.04
 
 on:
   workflow_dispatch:
@@ -10,15 +10,15 @@ on:
         default: 'OTP-25.3.2.7'
 
 concurrency:
-  group: erlang-25-deb
+  group: erlang-26-deb
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/erlang-debian-package.yml@test-build-deb
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@test-build-deb
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '25'
-      distribution_name: 'debian'
-      distribution_codename: 'trixie'
-      distribution_version: 'trixie'
+      erlang_major: '26'
+      distribution_name: 'ubuntu'
+      distribution_codename: 'jammy'
+      distribution_version: '22.04'
     secrets: inherit

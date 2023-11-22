@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/erlang-debian-package.yml@test-build-deb
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@test-build-deb
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
       erlang_major: '25'

@@ -9,13 +9,13 @@ set -ex
 
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get update
-apt-get install -y tzdata
+sudo apt-get update
+sudo apt-get install -y tzdata
 
-echo "Europe/London" > /etc/timezone
-dpkg-reconfigure -f noninteractive tzdata
+echo "Europe/London" | sudo tee -a /etc/timezone > /dev/null
+sudo dpkg-reconfigure -f noninteractive tzdata
 
-apt-get install -y --no-install-recommends \
+sudo apt-get install -y --no-install-recommends \
   ca-certificates \
   dpkg-dev \
   git \

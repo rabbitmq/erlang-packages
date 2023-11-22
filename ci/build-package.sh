@@ -18,7 +18,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y tzdata
 
-echo "Europe/London" > /etc/timezone
+echo "Europe/London" | tee -a /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
 apt-get install -y --no-install-recommends \
@@ -27,12 +27,12 @@ apt-get install -y --no-install-recommends \
   devscripts \
   equivs \
   git \
-  gnupg
-
-apt-get install -y --no-install-recommends git-buildpackage
+  rsync \
+  gnupg \
+  git-buildpackage
 
 # --------------------------------------------------------------------
-# Setup PGP signing key.
+# Check PGP signing key.
 # --------------------------------------------------------------------
 
 gpg -K "$SIGNING_KEY_ID"

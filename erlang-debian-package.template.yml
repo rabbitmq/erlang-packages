@@ -1,15 +1,28 @@
-name: Build Erlang 25 Debian Packages
+name: Reusable workflow to build Erlang Debian packages
+
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       erlang_tag:
         description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
         required: true
         type: string
-        default: 'OTP-25.3.2.7'
-
-concurrency:
-  group: erlang-25-deb
+      erlang_major:
+        description: 'Major version of Erlang (e.g. 25)'
+        required: true
+        type: string
+      distribution_name:
+        description: 'Distribution name (e.g. ubuntu, debian)'
+        required: true
+        type: string
+      distribution_codename:
+        description: 'Distribution codename (e.g. jammy, trixie)'
+        required: true
+        type: string
+      distribution_version:
+        description: 'Distribution version (e.g. 22.04, trixie)'
+        required: true
+        type: string
 
 env:
   ERLANG_TAG: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
@@ -26,12 +39,12 @@ jobs:
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
-          path: 'erlang-sources-pristine'
+          path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: 'OTP-25.x/ubuntu/22.04-test'
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
           path: 'package-sources'
           ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
       - name: Update package
@@ -39,12 +52,13 @@ jobs:
       - name: Push Changes to package repository
         working-directory: 'package-sources'
         run: |
-          git push origin OTP-25.x/ubuntu/22.04-test
+          git push origin OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test 
   build-source-package:
+    if: inputs.distribution_name == 'ubuntu'
     runs-on: ubuntu-22.04
     needs: update-package
     container:
-      image: ubuntu:22.04
+      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
     steps:
       - name: Install dependencies
         run: |
@@ -56,14 +70,13 @@ jobs:
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
-          path: 'erlang-sources-pristine'
+          path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: 'OTP-25.x/ubuntu/22.04-test'
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
           path: 'package-sources'
-          ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
@@ -74,17 +87,17 @@ jobs:
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           LAUNCHPAD_ID: ${{ secrets.LAUNCHPAD_ID }}
-          PPA_REPOSITORY: rabbitmq-erlang-25
-          DISTRIBUTION_NAME: ubuntu
-          DISTRIBUTION_CODENAME: jammy
-          DISTRIBUTION_VERSION: '22.04'
-          DISTRIBUTION_VERSIONS: '18.04 20.04 22.04'
+          PPA_REPOSITORY: rabbitmq-erlang-${{ inputs.erlang_major }}
+          DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
+          DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
+          DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
+          DISTRIBUTION_VERSIONS: '§ubuntu_versions§'
           SOURCE_PROJECT_NAME: erlang
   build-binary-package:
     runs-on: ubuntu-22.04
     needs: update-package
     container:
-      image: ubuntu:22.04
+      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
     steps:
       - name: Install dependencies
         run: |
@@ -96,18 +109,13 @@ jobs:
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
-          path: 'erlang-sources-pristine'
+          path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: 'OTP-25.x/ubuntu/22.04-test'
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
           path: 'package-sources'
-          ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
-      - name: Push Changes to package repository
-        working-directory: 'package-sources'
-        run: |
-          git push origin OTP-25.x/ubuntu/22.04-test
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
@@ -126,7 +134,7 @@ jobs:
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           action: delete
           do_delete: true
-          version_filter: '1:25*'
+          version_filter: 1:${{ inputs.erlang_major }}*
           keep_last_n: 1
           keep_last_minor_patches: true
       - name: Push packages to Cloudsmith
@@ -136,29 +144,24 @@ jobs:
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
           repository: rabbitmq-erlang-test
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
-          distribution: 'ubuntu/jammy'
+          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
           action: upload
           republish: true
           local_path: packages
           globs: '*.deb'
-          tags: 'erlang,erlang-25.x'
-      - name: Test package
-        run: ci/test-cloudsmith-package.sh
-        env:
-          CLOUDSMITH_ORG: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          CLOUDSMITH_REPOSITORY: rabbitmq-erlang
+          tags: erlang,erlang-${{ inputs.erlang_major }}.x
   test-binary-package:
     runs-on: ubuntu-22.04
     needs: build-binary-package
     container:
-      image: ubuntu:22.04
+      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
     steps:
       - uses: actions/checkout@v4
       - name: Check out Erlang Debian package repository
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: 'OTP-25.x/ubuntu/22.04-test'
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
           path: 'package-sources'
       - name: Test package
         run: ci/test-cloudsmith-package.sh

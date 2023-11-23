@@ -1,0 +1,24 @@
+name: Build Erlang §erlang_major§ for §distribution_label§
+
+on:
+  workflow_dispatch:
+    inputs:
+      erlang_tag:
+        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        required: true
+        type: string
+        default: 'OTP-25.3.2.7'
+
+concurrency:
+  group: erlang-§erlang_major§-deb
+
+jobs:
+  call-reusable-workflow:
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@test-build-deb
+    with:
+      erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
+      erlang_major: '§erlang_major§'
+      distribution_name: '§distribution_name§'
+      distribution_codename: '§distribution_codename§'
+      distribution_version: '§distribution_version§'
+    secrets: inherit

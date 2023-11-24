@@ -1,0 +1,14 @@
+{ "distributions" : [
+  { "name": "debian", "codename" : "buster", "version" : "buster" },
+  { "name": "debian", "codename" : "bullseye", "version" : "bullseye" },
+  { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
+  { "name": "debian", "codename" : "trixie", "version" : "trixie" },
+  { "name": "ubuntu", "codename" : "bionic", "version" : "18.04" },
+  { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
+  { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" }
+],
+  "packages" : [
+    {"major": "24", "distributions" : ["buster", "bullseye", "bionic", "focal", "jammy"]},
+    {"major": "25", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "bionic", "focal", "jammy"]},
+    {"major": "26", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"]}
+]}

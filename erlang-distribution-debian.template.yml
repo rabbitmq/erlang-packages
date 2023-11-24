@@ -8,13 +8,15 @@ on:
         required: true
         type: string
         default: 'OTP-25.3.2.7'
+  repository_dispatch:
+    types: [new_erlang_§erlang_major§]
 
 concurrency:
   group: erlang-§erlang_major§-deb
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@test-build-deb
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
       erlang_major: '§erlang_major§'

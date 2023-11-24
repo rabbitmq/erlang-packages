@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
           ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
       - name: Update package
@@ -52,7 +52,7 @@ jobs:
       - name: Push Changes to package repository
         working-directory: 'package-sources'
         run: |
-          git push origin OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test 
+          git push origin OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
   build-source-package:
     if: inputs.distribution_name == 'ubuntu'
     runs-on: ubuntu-22.04
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -114,7 +114,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -130,7 +130,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang-test
+          repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           action: delete
           do_delete: true
@@ -142,7 +142,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang-test
+          repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
           action: upload
@@ -161,7 +161,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
-          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
       - name: Test package
         run: ci/test-cloudsmith-package.sh

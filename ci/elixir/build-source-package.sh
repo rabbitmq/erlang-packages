@@ -73,7 +73,7 @@ package_version="$changelog_version-1rmq1ppa1~ubuntu$DISTRIBUTION_VERSION.1"
 source_filename="$(echo $SOURCE_PROJECT_NAME)_$changelog_version.orig.tar.gz"
 
 for dist_version in $DISTRIBUTION_VERSIONS; do 
-    source_url="https://launchpad.net/~$PPA_USERNAME/+archive/ubuntu/$PPA_REPOSITORY/+sourcefiles/$SOURCE_PROJECT_NAME/$changelog_version-1rmq1ppa1~ubuntu$dist_version.1/$source_filename"
+    source_url="https://launchpad.net/~$LAUNCHPAD_ID/+archive/ubuntu/$PPA_REPOSITORY/+sourcefiles/$SOURCE_PROJECT_NAME/$changelog_version-1rmq1ppa1~ubuntu$dist_version.1/$source_filename"
     set +e
     wget --output-document "$source_filename" "$source_url"
     if [ $? != 0 ]; then
@@ -147,7 +147,7 @@ cat > ~/.dput.cf <<EOF
 fqdn = ppa.launchpad.net
 method = ftp
 login = anonymous
-incoming = ~$PPA_USERNAME/ubuntu/$PPA_REPOSITORY/$DISTRIBUTION_CODENAME
+incoming = ~$LAUNCHPAD_ID/ubuntu/$PPA_REPOSITORY/$DISTRIBUTION_CODENAME
 allow_unsigned_uploads = 0
 EOF
 
@@ -159,7 +159,7 @@ echo "Waiting until source file is available"
 SOURCE_WAIT_TIMEOUT=600
 SOURCE_RETRY_INTERVAL=20
 SOURCE_WAITED_TIME=0
-SOURCE_URL="https://launchpad.net/~$PPA_USERNAME/+archive/ubuntu/$PPA_REPOSITORY/+sourcefiles/$SOURCE_PROJECT_NAME/$package_version/$source_filename"
+SOURCE_URL="https://launchpad.net/~$LAUNCHPAD_ID/+archive/ubuntu/$PPA_REPOSITORY/+sourcefiles/$SOURCE_PROJECT_NAME/$package_version/$source_filename"
 
 until [ $SOURCE_WAITED_TIME -ge $SOURCE_WAIT_TIMEOUT ]
 do

@@ -1,0 +1,138 @@
+name: Reusable workflow to build Erlang Debian packages
+
+on:
+  workflow_call:
+    inputs:
+      elixir_tag:
+        description: 'Elixir tag (e.g. v1.15.7)'
+        required: true
+        type: string
+      distribution_name:
+        description: 'Distribution name (e.g. ubuntu, debian)'
+        required: true
+        type: string
+      distribution_codename:
+        description: 'Distribution codename (e.g. jammy, trixie)'
+        required: true
+        type: string
+      distribution_version:
+        description: 'Distribution version (e.g. 22.04, trixie)'
+        required: true
+        type: string
+
+env:
+  ELIXIR_TAG: ${{ inputs.elixir_tag != '' && inputs.elixir_tag || github.event.client_payload.tag }}
+  GIT_AUTHOR_NAME: ${{ secrets.RABBITMQ_CI_USERNAME }}
+  GIT_AUTHOR_EMAIL: ${{ secrets.RABBITMQ_CI_EMAIL }}
+
+jobs:
+  update-package:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out Erlang OTP source code
+        uses: actions/checkout@v4
+        with:
+          repository: elixir-lang/elixir
+          ref: ${{ env.ELIXIR_TAG }}
+          path: 'elixir-sources'
+      - name: Check out Debian Debian package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/elixir-debian-package
+          ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          path: 'package-sources'
+          ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
+      - name: Update package
+        run: ci/elixir/update-package.sh
+      - name: Push Changes to package repository
+        working-directory: 'package-sources'
+        run: |
+          git push origin ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+  build-source-package:
+    if: inputs.distribution_name == 'ubuntu'
+    runs-on: ubuntu-22.04
+    needs: update-package
+    container:
+      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
+      - uses: actions/checkout@v4
+      - name: Check out Elixir source code
+        uses: actions/checkout@v4
+        with:
+          repository: elixir-lang/elixir
+          ref: ${{ env.ELIXIR_TAG }}
+          path: 'elixir-sources'
+      - name: Check out Elixir Debian package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/elixir-debian-package
+          ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
+          path: 'package-sources'
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      - name: Build source package
+        run: ci/elixir/build-source-package.sh
+        env:
+          SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+          LAUNCHPAD_ID: ${{ secrets.LAUNCHPAD_ID }}
+          PPA_REPOSITORY: rabbitmq-erlang
+          DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
+          DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
+          DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
+          DISTRIBUTION_VERSIONS: '18.04 20.04 22.04'
+          SOURCE_PROJECT_NAME: elixir-lang
+          ERLANG_VERSION: '1:25*'
+  build-binary-package:
+    runs-on: ubuntu-22.04
+    needs: update-package
+    container:
+      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
+      - uses: actions/checkout@v4
+      - name: Check out Elixir source code
+        uses: actions/checkout@v4
+        with:
+          repository: elixir-lang/elixir
+          ref: ${{ env.ELIXIR_TAG }}
+          path: 'elixir-sources'
+      - name: Check out Elixir Debian package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/elixir-debian-package
+          ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}-test
+          path: 'package-sources'
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      - name: Build package
+        run: ci/elixir/build-package.sh
+        env:
+          SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+          ERLANG_VERSION: '1:25*'
+      - name: Push packages to Cloudsmith
+        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
+        with:
+          username: ${{ secrets.CLOUDSMITH_USERNAME }}
+          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          repository: rabbitmq-erlang
+          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
+          action: upload
+          republish: true
+          local_path: packages
+          globs: '*.deb'
+          tags: 'elixir'

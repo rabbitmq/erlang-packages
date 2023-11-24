@@ -1,8 +1,8 @@
-name: Check for New Erlang Versions
+name: Check for New Elixir Versions
 
 on:
   schedule:
-    - cron: 0 * * * *
+    - cron: 10 * * * *
   workflow_dispatch:
 
 env:
@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run check script
         run: |
-          python ci/check-new-releases.py erlang erlang/otp
+          python ci/check-new-releases.py elixir elixir-lang/elixir
       - name: Commit changes 
         if: ${{ env.has_changed == 'true' }}
         run: |
           git config --global user.name "$GIT_AUTHOR_NAME"
           git config --global user.email "$GIT_AUTHOR_EMAIL"
-          git commit -a -m "New Erlang version(s) detected"
+          git commit -a -m "New Elixir version(s) detected"
           git push origin ${{ github.ref }}

@@ -39,27 +39,28 @@ has_changed = False
 
 for release in releases:
     tag = release["tag_name"]
-    major = tag.replace("OTP-", "").replace("v", "").split(".")[0]
-    if major in majors:
-        majors.remove(major)
-        old_latest = "-1" if major not in old_latests else old_latests[major]
-        new_latest = tag
-        new_latests[major] = new_latest
-        if old_latest != new_latest:
-            has_changed = True
-            print("New tag detected for major " + major + ": " + new_latest)
-            body = {
-                    "event_type" : "new_" + project + "_" + major,
-                    "client_payload": { "tag" : new_latest } 
-                    }
-            print("Sending notification with body:")
-            print(body)
-            response = requests.post(
-                    "https://api.github.com/repos/rabbitmq/erlang-packages/dispatches",
-                    json = body,
-                    headers = headers)
-            if not response.ok:
-                print("Notification failed with status status: " + response.status_code)
+    curated_tag = tag.replace("OTP-", "").replace("v", "")
+    for major in majors:
+        if (curated_tag.startswith(major)):
+            majors.remove(major)
+            old_latest = "-1" if major not in old_latests else old_latests[major]
+            new_latest = tag
+            new_latests[major] = new_latest
+            if old_latest != new_latest:
+                has_changed = True
+                print("New tag detected for major " + major + ": " + new_latest)
+                body = {
+                        "event_type" : "new_" + project + "_" + major,
+                        "client_payload": { "tag" : new_latest } 
+                        }
+                print("Sending notification with body:")
+                print(body)
+                response = requests.post(
+                        "https://api.github.com/repos/rabbitmq/erlang-packages/dispatches",
+                        json = body,
+                        headers = headers)
+                if not response.ok:
+                    print("Notification failed with status status: " + response.status_code)
 
 if has_changed:
     print("New state:")

@@ -1,0 +1,18 @@
+name: Check for New Erlang Versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run check script
+        run: |
+          python check-new-erlang-release.py
+      - name: Commit changes 
+        if: ${{ env.has_changed == 'true' }}
+        run: |
+          git commit -a -m "New Erlang version(s) detected"
+          git push origin ${{ github.ref }} 

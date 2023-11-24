@@ -11,9 +11,6 @@ on:
   repository_dispatch:
     types: [new_erlang_§erlang_major§]
 
-concurrency:
-  group: erlang-§erlang_major§-deb
-
 jobs:
   call-reusable-workflow:
     uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main

@@ -3,7 +3,9 @@
 import os
 import json
 
-with open('configuration.json', 'r') as f:
+configuration_filename = 'erlang-configuration.json'
+
+with open(configuration_filename, 'r') as f:
   configuration = json.load(f)
 
 distributions = configuration["distributions"]

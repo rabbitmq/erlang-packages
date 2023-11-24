@@ -1,22 +1,28 @@
 #!/bin/python
 
+import sys
 import json
 import requests
 import os
 
-with open('configuration.json', 'r') as f:
+project = sys.argv[1]
+org_repository = sys.argv[2]
+
+configuration_filename = project + "-configuration.json"
+releases_filename = project + "-releases.json"
+
+with open(configuration_filename, 'r') as f:
   packages = json.load(f)["packages"]
 
-erlang_majors = list(map(lambda p: p["major"], packages))
+majors = list(map(lambda p: p["major"], packages))
 
-print("Getting latest Erlang releases...")
+print("Getting latest releases...")
 releases = requests.get(
-        'https://api.github.com/repos/erlang/otp/releases',
+        "https://api.github.com/repos/" + org_repository + "/releases",
         headers = {'X-GitHub-Api-Version' : '2022-11-28', 'Accept' : 'application/vnd.github+json'}
         ).json()
 
-latests_filename = 'latests.json'
-with open(latests_filename, 'r') as f:
+with open(releases_filename, 'r') as f:
   old_latests = json.load(f)
 
 print("Current state:")
@@ -33,27 +39,27 @@ has_changed = False
 
 for release in releases:
     tag = release["tag_name"]
-    major = tag.replace("OTP-", "").split(".")[0]
-    if major in erlang_majors:
-        erlang_majors.remove(major)
+    major = tag.replace("OTP-", "").replace("v", "").split(".")[0]
+    if major in majors:
+        majors.remove(major)
         old_latest = "-1" if major not in old_latests else old_latests[major]
         new_latest = tag
         new_latests[major] = new_latest
         if old_latest != new_latest:
             has_changed = True
-            print("New tag detected for Erlang " + major + ": " + new_latest)
+            print("New tag detected for major " + major + ": " + new_latest)
             body = {
-                    "event_type" : "new_erlang_" + major,
+                    "event_type" : "new_" + project + "_" + major,
                     "client_payload": { "tag" : new_latest } 
                     }
             print("Sending notification with body:")
             print(body)
-            # response = requests.post(
-            #         "https://api.github.com/repos/rabbitmq/erlang-packages/dispatches",
-            #         json = body,
-            #         headers = headers)
-            # if not response.ok:
-            #     print("Notification failed with status status: " + response.status_code)
+            response = requests.post(
+                    "https://api.github.com/repos/rabbitmq/erlang-packages/dispatches",
+                    json = body,
+                    headers = headers)
+            if not response.ok:
+                print("Notification failed with status status: " + response.status_code)
 
 if has_changed:
     print("New state:")
@@ -61,9 +67,9 @@ if has_changed:
 else:
     print("No changes detected.")
 
-latests_file = open(latests_filename, 'w')
-json.dump(new_latests, latests_file)
-latests_file.close()
+releases_file = open(releases_filename, 'w')
+json.dump(new_latests, releases_file)
+releases_file.close()
 
 if 'GITHUB_ENV' in os.environ:
     has_changed = "true" if has_changed else "false"

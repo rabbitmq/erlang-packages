@@ -8,7 +8,7 @@ import os
 project = sys.argv[1]
 org_repository = sys.argv[2]
 
-configuration_filename = project + "-configuration.json"
+configuration_filename = project + "-deb-configuration.json"
 releases_filename = project + "-releases.json"
 
 with open(configuration_filename, 'r') as f:

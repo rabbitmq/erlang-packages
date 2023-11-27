@@ -1,0 +1,22 @@
+name: Build Elixir §major§ for §distribution_label§
+
+on:
+  workflow_dispatch:
+    inputs:
+      elixir_tag:
+        description: 'Elixir tag (e.g. v1.15.7)'
+        required: true
+        type: string
+        default: 'v1.15.7'
+  repository_dispatch:
+    types: [new_§project§_§major_label§]
+
+jobs:
+  call-reusable-workflow:
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-elixir-reusable-workflow.yml@test-elixir
+    with:
+      elixir_tag: ${{ inputs.elixir_tag != '' && inputs.elixir_tag || github.event.client_payload.tag }}
+      distribution_name: '§distribution_name§'
+      distribution_codename: '§distribution_codename§'
+      distribution_version: '§distribution_version§'
+    secrets: inherit

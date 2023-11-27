@@ -1,4 +1,4 @@
-name: Build Erlang 25 for Debian Buster
+name: Build Erlang 25 for Debian Bookworm
 
 on:
   workflow_dispatch:
@@ -13,11 +13,11 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '25'
+      erlang_major: '§erlang_major§'
       distribution_name: 'debian'
-      distribution_codename: 'buster'
-      distribution_version: 'buster'
+      distribution_codename: 'bookworm'
+      distribution_version: 'bookworm'
     secrets: inherit

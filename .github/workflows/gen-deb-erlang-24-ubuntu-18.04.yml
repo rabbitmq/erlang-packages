@@ -1,4 +1,4 @@
-name: Build Erlang 25 for Debian Bookworm
+name: Build Erlang 24 for Ubuntu 18.04
 
 on:
   workflow_dispatch:
@@ -9,15 +9,15 @@ on:
         type: string
         default: 'OTP-25.3.2.7'
   repository_dispatch:
-    types: [new_erlang_25]
+    types: [new_erlang_24]
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '25'
-      distribution_name: 'debian'
-      distribution_codename: 'bookworm'
-      distribution_version: 'bookworm'
+      erlang_major: '§erlang_major§'
+      distribution_name: 'ubuntu'
+      distribution_codename: 'bionic'
+      distribution_version: '18.04'
     secrets: inherit

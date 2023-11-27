@@ -1,4 +1,4 @@
-name: Build Erlang §erlang_major§ for §distribution_label§
+name: Build Erlang §major§ for §distribution_label§
 
 on:
   workflow_dispatch:
@@ -9,11 +9,11 @@ on:
         type: string
         default: 'OTP-25.3.2.7'
   repository_dispatch:
-    types: [new_erlang_§erlang_major§]
+    types: [new_§project§_§major_label§]
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
       erlang_major: '§erlang_major§'

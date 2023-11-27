@@ -8,7 +8,7 @@
   { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" }
 ],
   "packages" : [
-    {"major": "24", "distributions" : ["buster", "bullseye", "bionic", "focal", "jammy"]},
-    {"major": "25", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "bionic", "focal", "jammy"]},
+    {"major": "24", "distributions" : ["buster", "bullseye", "focal", "jammy"]},
+    {"major": "25", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"]},
     {"major": "26", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"]}
 ]}

@@ -16,7 +16,7 @@ jobs:
     uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '§erlang_major§'
+      erlang_major: '24'
       distribution_name: 'debian'
       distribution_codename: 'bullseye'
       distribution_version: 'bullseye'

@@ -16,7 +16,7 @@ jobs:
     uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '§erlang_major§'
+      erlang_major: '25'
       distribution_name: 'ubuntu'
       distribution_codename: 'focal'
       distribution_version: '20.04'

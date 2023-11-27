@@ -50,7 +50,7 @@ for release in releases:
                 has_changed = True
                 print("New tag detected for major " + major + ": " + new_latest)
                 body = {
-                        "event_type" : "new_" + project + "_" + major,
+                        "event_type" : "new_" + project + "_" + major.replace(".", "_"),
                         "client_payload": { "tag" : new_latest } 
                         }
                 print("Sending notification with body:")

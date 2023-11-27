@@ -1,4 +1,4 @@
-name: Build Erlang 24 for Debian Buster
+name: Build Erlang 26 for Ubuntu 22.04
 
 on:
   workflow_dispatch:
@@ -9,15 +9,15 @@ on:
         type: string
         default: 'OTP-25.3.2.7'
   repository_dispatch:
-    types: [new_erlang_24]
+    types: [new_erlang_26]
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-erlang-debian-package.yml@main
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '24'
-      distribution_name: 'debian'
-      distribution_codename: 'buster'
-      distribution_version: 'buster'
+      erlang_major: '§erlang_major§'
+      distribution_name: 'ubuntu'
+      distribution_codename: 'jammy'
+      distribution_version: '22.04'
     secrets: inherit

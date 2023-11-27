@@ -7,8 +7,15 @@ set -ex
 # Install tools.
 # --------------------------------------------------------------------
 
-apt-get update
-apt-get install -y --no-install-recommends \
+export DEBIAN_FRONTEND=noninteractive
+
+sudo apt-get update
+sudo apt-get install -y tzdata
+
+echo "Europe/London" | sudo tee -a /etc/timezone > /dev/null
+sudo dpkg-reconfigure -f noninteractive tzdata
+
+sudo apt-get install -y --no-install-recommends \
   dpkg-dev \
   git \
   rsync

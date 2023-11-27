@@ -1,4 +1,4 @@
-name: Reusable workflow to build Erlang Debian packages
+name: Reusable workflow to build Elixir Debian packages
 
 on:
   workflow_call:
@@ -44,7 +44,7 @@ jobs:
           path: 'package-sources'
           ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
       - name: Update package
-        run: ci/elixir/update-package.sh
+        run: ci/elixir/deb/update-package.sh
       - name: Push Changes to package repository
         working-directory: 'package-sources'
         run: |
@@ -79,7 +79,7 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
       - name: Build source package
-        run: ci/elixir/build-source-package.sh
+        run: ci/elixir/deb/build-source-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           LAUNCHPAD_ID: ${{ secrets.LAUNCHPAD_ID }}
@@ -87,7 +87,7 @@ jobs:
           DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
           DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
           DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
-          DISTRIBUTION_VERSIONS: '18.04 20.04 22.04'
+          DISTRIBUTION_VERSIONS: '20.04 22.04'
           SOURCE_PROJECT_NAME: elixir-lang
           ERLANG_VERSION: '1:25*'
   build-binary-package:
@@ -119,7 +119,7 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
       - name: Build package
-        run: ci/elixir/build-package.sh
+        run: ci/elixir/deb/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           ERLANG_VERSION: '1:25*'
@@ -128,7 +128,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
+          repository: rabbitmq-erlang-test
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
           action: upload

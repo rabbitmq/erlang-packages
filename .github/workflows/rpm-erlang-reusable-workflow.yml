@@ -1,0 +1,46 @@
+name: Reusable workflow to build Erlang RPM packages
+
+on:
+  workflow_call:
+    inputs:
+      erlang_major:
+        description: 'Major version of Erlang (e.g. 25)'
+        required: true
+        type: string
+      distribution_name:
+        description: 'Distribution name (e.g. el)'
+        required: true
+        type: string
+      distribution_version:
+        description: 'Distribution version (e.g. 8, 9)'
+        required: true
+        type: string
+
+env:
+  ERLANG_MAJOR: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }}
+
+jobs:
+  build-binary-package:
+    runs-on: ubuntu-22.04
+    container:
+      image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out Erlang RPM package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/erlang-rpm
+          ref: erlang-${{ env.ERLANG_MAJOR }}
+          path: 'package-sources'
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      - name: Build package
+        run: ci/erlang/rpm/build-package.sh
+        env:
+          SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+      - name: List generated packages
+        run: |
+          ls -alh packages

@@ -48,7 +48,7 @@ jobs:
           path: 'package-sources'
           ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
       - name: Update package
-        run: ci/erlang/update-package.sh
+        run: ci/erlang/deb/update-package.sh
       - name: Push Changes to package repository
         working-directory: 'package-sources'
         run: |
@@ -83,7 +83,7 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
       - name: Build source package
-        run: ci/erlang/build-source-package.sh
+        run: ci/erlang/deb/build-source-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           LAUNCHPAD_ID: ${{ secrets.LAUNCHPAD_ID }}
@@ -122,7 +122,7 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
       - name: Build package
-        run: ci/erlang/build-package.sh
+        run: ci/erlang/deb/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
       - name: Delete latest versions
@@ -164,7 +164,7 @@ jobs:
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
       - name: Test package
-        run: ci/erlang/test-cloudsmith-package.sh
+        run: ci/erlang/deb/test-cloudsmith-package.sh
         env:
           CLOUDSMITH_ORG: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
           CLOUDSMITH_REPOSITORY: rabbitmq-erlang

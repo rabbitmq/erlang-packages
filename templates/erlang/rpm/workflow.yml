@@ -1,0 +1,19 @@
+name: Build Erlang §major§ for §distribution_label§
+
+on:
+  workflow_dispatch:
+    inputs:
+      erlang_major:
+        description: 'Erlang major version (e.g. §major§)'
+        required: true
+        type: string
+        default: '§major§'
+
+jobs:
+  call-reusable-workflow:
+    uses: rabbitmq/erlang-packages/.github/workflows/rpm-erlang-reusable-workflow.yml@main
+    with:
+      erlang_major: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }} 
+      distribution_name: '§distribution_name§'
+      distribution_version: '§distribution_version§'
+    secrets: inherit

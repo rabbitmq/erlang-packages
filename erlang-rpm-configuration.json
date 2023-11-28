@@ -1,0 +1,9 @@
+{ "distributions" : [
+  { "name": "el", "codename" : "el8", "version" : "8" },
+  { "name": "el", "codename" : "el9", "version" : "9" }
+],
+  "packages" : [
+    {"major": "24", "distributions" : ["el8", "el9"]},
+    {"major": "25", "distributions" : ["el8", "el9"]},
+    {"major": "26", "distributions" : ["el8", "el9"]}
+]}

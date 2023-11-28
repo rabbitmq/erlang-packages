@@ -1,13 +1,13 @@
-name: Build Erlang 25 for el/8
+name: Build Erlang 26 for El 9
 
 on:
   workflow_dispatch:
     inputs:
       erlang_major:
-        description: 'Erlang major version (e.g. 25)'
+        description: 'Erlang major version (e.g. 26)'
         required: true
         type: string
-        default: '25'
+        default: '26'
 
 jobs:
   call-reusable-workflow:
@@ -15,5 +15,5 @@ jobs:
     with:
       erlang_major: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }} 
       distribution_name: 'el'
-      distribution_version: '8'
+      distribution_version: '9'
     secrets: inherit

@@ -1,0 +1,91 @@
+name: Reusable workflow to build Erlang RPM packages
+
+on:
+  workflow_call:
+    inputs:
+      erlang_major:
+        description: 'Major version of Erlang (e.g. 25)'
+        required: true
+        type: string
+      distribution_name:
+        description: 'Distribution name (e.g. el)'
+        required: true
+        type: string
+      distribution_version:
+        description: 'Distribution version (e.g. 8, 9)'
+        required: true
+        type: string
+
+env:
+  ERLANG_MAJOR: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }}
+
+jobs:
+  build-binary-package:
+    runs-on: ubuntu-22.04
+    container:
+      image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out Erlang RPM package repository
+        uses: actions/checkout@v4
+        with:
+          repository: rabbitmq/erlang-rpm
+          ref: erlang-${{ env.ERLANG_MAJOR }}
+          path: 'package-sources'
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      - name: Build package
+        run: ci/erlang/rpm/build-package.sh
+        env:
+          SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+      - name: List generated packages
+        run: |
+          ls -alh packages
+      - name: Delete latest versions on Cloudsmith
+        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
+        with:
+          username: ${{ secrets.CLOUDSMITH_USERNAME }}
+          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          repository: rabbitmq-erlang
+          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          action: delete
+          do_delete: true
+          version_filter: '${{ inputs.erlang_major }}.*'
+          name: '^erlang*'
+          keep_last_n: 2
+          keep_last_minor_patches: true
+      - name: Push packages to Cloudsmith
+        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
+        with:
+          username: ${{ secrets.CLOUDSMITH_USERNAME }}
+          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          repository: rabbitmq-erlang
+          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
+          action: upload
+          republish: true
+          name: '^erlang*'
+          local_path: packages
+          globs: 'erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm'
+          tags: erlang,erlang-${{ inputs.erlang_major }}.x
+      - name: Extract version
+        run: |
+          version=$(grep "^OTP_RELEASE" < package-sources/Makefile | cut -d "=" -f 2)
+          echo $version
+          echo "erlang_version=$version" >> $GITHUB_ENV
+      - name: Push to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: packages/*
+          name: ${{ env.erlang_version }}
+          tag_name: v${{ env.erlang_version }}
+          target_commitish: erlang-${{ env.ERLANG_MAJOR }}
+          token: ${{ secrets.CI_GITHUB_TOKEN }}
+          repository: rabbitmq/erlang-rpm
+          body: >-
+            Zero dependency Erlang/OTP ${{ env.erlang_version }} packages
+            for modern RHEL, Fedora, CentOS, and Rocky Linux releases,
+            suitable for running RabbitMQ.

@@ -135,7 +135,7 @@ jobs:
           action: delete
           do_delete: true
           version_filter: 1:${{ inputs.erlang_major }}*
-          keep_last_n: 1
+          keep_last_n: 2
           keep_last_minor_patches: true
       - name: Push packages to Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest

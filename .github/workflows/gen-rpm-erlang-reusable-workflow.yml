@@ -41,15 +41,12 @@ jobs:
         run: ci/erlang/rpm/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
-      - name: List generated packages
-        run: |
-          ls -alh packages
       - name: Delete latest versions on Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
+          repository: rabbitmq-erlang-test
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           action: delete
           do_delete: true
@@ -62,7 +59,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
+          repository: rabbitmq-erlang-test
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           action: upload
@@ -80,8 +77,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: packages/*
-          name: ${{ env.erlang_version }}
-          tag_name: v${{ env.erlang_version }}
+          name: ${{ env.erlang_version }}-test
+          tag_name: v${{ env.erlang_version }}-test
           target_commitish: erlang-${{ env.ERLANG_MAJOR }}
           token: ${{ secrets.CI_GITHUB_TOKEN }}
           repository: rabbitmq/erlang-rpm

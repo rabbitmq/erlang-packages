@@ -1,19 +1,16 @@
-name: Build Erlang 24 for El 9
+name: Build Erlang 24 for el/9
 
 on:
   workflow_dispatch:
-    inputs:
-      erlang_major:
-        description: 'Erlang major version (e.g. 24)'
-        required: true
-        type: string
-        default: '24'
+  repository_dispatch:
+    types: [rpm_erlang_24]
+
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/rpm-erlang-reusable-workflow.yml@main
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-rpm-erlang-reusable-workflow.yml@main
     with:
-      erlang_major: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }} 
+      erlang_major: '24'
       distribution_name: 'el'
       distribution_version: '9'
     secrets: inherit

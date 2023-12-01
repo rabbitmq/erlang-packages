@@ -41,6 +41,14 @@ jobs:
         run: ci/erlang/rpm/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+      - name: Push packages to Packagecloud
+        uses: computology/packagecloud-github-action@v0.6
+        with:
+          PACKAGE-NAME: 'packages/erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm' 
+          PACKAGECLOUD-USERNAME: ${{ secrets.PACKAGECLOUD_USERNAME }}
+          PACKAGECLOUD-REPONAME: erlang
+          PACKAGECLOUD-DISTRO: '${{ inputs.distribution_name }}/${{ inputs.distribution_version }}'
+          PACKAGECLOUD-TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
       - name: Delete latest versions on Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:

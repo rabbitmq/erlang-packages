@@ -1,0 +1,6 @@
+FROM quay.io/centos/centos:stream8
+
+RUN dnf update -y
+RUN dnf install -y autoconf clang m4 openssl-devel ncurses-devel rpm-build rpmdevtools rpmlint tar wget zlib-devel systemd-devel make
+
+RUN mkdir /build

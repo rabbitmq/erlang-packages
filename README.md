@@ -38,3 +38,13 @@ Built from [Elixir packages for Debian and Ubuntu](https://github.com/rabbitmq/e
 ./generate.py elixir deb
 ```
 * Commit and push the changes (in `elixir-deb-configuration.json` and in `.github/workflows`).
+
+# License and Copyright
+
+(c) 2023 Broadcom. All Rights Reserved.
+The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+
+This package, the Concourse Cloudsmith Resource, is licensed
+under the Mozilla Public License 2.0 ("MPL").
+
+See [LICENSE](./LICENSE).

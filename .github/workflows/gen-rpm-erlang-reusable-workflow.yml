@@ -54,7 +54,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang-test
+          repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           action: delete
           do_delete: true
@@ -85,8 +85,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: packages/*
-          name: ${{ env.erlang_version }}-test
-          tag_name: v${{ env.erlang_version }}-test
+          name: ${{ env.erlang_version }}
+          tag_name: v${{ env.erlang_version }}
           target_commitish: erlang-${{ env.ERLANG_MAJOR }}
           token: ${{ secrets.CI_GITHUB_TOKEN }}
           repository: rabbitmq/erlang-rpm

@@ -20,4 +20,5 @@ jobs:
       distribution_name: 'ubuntu'
       distribution_codename: 'jammy'
       distribution_version: '22.04'
+      ppa_repository: 'rabbitmq-erlang'
     secrets: inherit

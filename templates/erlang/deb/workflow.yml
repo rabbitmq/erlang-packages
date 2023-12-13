@@ -20,4 +20,5 @@ jobs:
       distribution_name: '§distribution_name§'
       distribution_codename: '§distribution_codename§'
       distribution_version: '§distribution_version§'
+      ppa_repository: '§ppa_repository§'
     secrets: inherit

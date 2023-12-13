@@ -20,4 +20,5 @@ jobs:
       distribution_name: 'debian'
       distribution_codename: 'buster'
       distribution_version: 'buster'
+      ppa_repository: 'rabbitmq-erlang'
     secrets: inherit

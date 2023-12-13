@@ -87,7 +87,7 @@ jobs:
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           LAUNCHPAD_ID: ${{ secrets.LAUNCHPAD_ID }}
-          PPA_REPOSITORY: rabbitmq-erlang-${{ inputs.erlang_major }}
+          PPA_REPOSITORY: ${{ inputs.ppa_repository }}
           DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
           DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
           DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
@@ -135,7 +135,7 @@ jobs:
           action: delete
           do_delete: true
           version_filter: 1:${{ inputs.erlang_major }}*
-          keep_last_n: 1
+          keep_last_n: 2
           keep_last_minor_patches: true
       - name: Push packages to Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest

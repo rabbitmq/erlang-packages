@@ -20,4 +20,5 @@ jobs:
       distribution_name: 'debian'
       distribution_codename: 'bookworm'
       distribution_version: 'bookworm'
+      ppa_repository: 'rabbitmq-erlang'
     secrets: inherit

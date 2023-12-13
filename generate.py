@@ -44,6 +44,7 @@ for package in packages:
     major_version = package["major"]
     major_label = major_version.replace(".", "_")
     supported_distributions = package["distributions"]
+    ppa_repository = package.get("ppa_repository", "")
     for distribution in distributions:
         distribution_name = distribution["name"]
         distribution_codename = distribution["codename"]
@@ -58,7 +59,8 @@ for package in packages:
                 .replace("§distribution_label§", distribution_label)\
                 .replace("§distribution_name§", distribution_name)\
                 .replace("§distribution_codename§", distribution_codename)\
-                .replace("§distribution_version§", distribution_version)
+                .replace("§distribution_version§", distribution_version)\
+                .replace("§ppa_repository§", ppa_repository)
             workflow_filename = f"gen-{package_type}-{project}-{major_version}-{distribution_name}-{distribution_version}.yml"
             workflow_file = open(os.path.join(generated_directory, workflow_filename), "w") 
             workflow_file.write(workflow)

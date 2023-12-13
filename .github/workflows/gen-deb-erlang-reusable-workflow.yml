@@ -23,6 +23,10 @@ on:
         description: 'Distribution version (e.g. 22.04, trixie)'
         required: true
         type: string
+      ppa_repository:
+        description: 'PPA repository for Ubuntu distributions (e.g. rabbitmq-erlang-25)'
+        required: true
+        type: string
 
 env:
   ERLANG_TAG: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}

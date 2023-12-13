@@ -67,7 +67,7 @@ jobs:
         with:
           username: ${{ secrets.CLOUDSMITH_USERNAME }}
           organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang-test
+          repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           action: upload

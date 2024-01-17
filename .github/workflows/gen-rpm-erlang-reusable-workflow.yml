@@ -41,41 +41,6 @@ jobs:
         run: ci/erlang/rpm/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
-      - name: Push packages to Packagecloud
-        uses: computology/packagecloud-github-action@v0.9
-        with:
-          PACKAGE-NAME: 'packages/erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm' 
-          PACKAGECLOUD-USERNAME: ${{ secrets.PACKAGECLOUD_USERNAME }}
-          PACKAGECLOUD-REPONAME: erlang
-          PACKAGECLOUD-DISTRO: '${{ inputs.distribution_name }}/${{ inputs.distribution_version }}'
-          PACKAGECLOUD-TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
-      - name: Delete latest versions on Cloudsmith
-        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
-        with:
-          username: ${{ secrets.CLOUDSMITH_USERNAME }}
-          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
-          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
-          action: delete
-          do_delete: true
-          version_filter: '${{ inputs.erlang_major }}.*'
-          name: '^erlang*'
-          keep_last_n: 2
-          keep_last_minor_patches: true
-      - name: Push packages to Cloudsmith
-        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
-        with:
-          username: ${{ secrets.CLOUDSMITH_USERNAME }}
-          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
-          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
-          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
-          action: upload
-          republish: true
-          name: '^erlang*'
-          local_path: packages
-          globs: 'erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm'
-          tags: erlang,erlang-${{ inputs.erlang_major }}.x
       - name: Extract version
         run: |
           version=$(grep "^OTP_RELEASE" < package-sources/Makefile | cut -d "=" -f 2)

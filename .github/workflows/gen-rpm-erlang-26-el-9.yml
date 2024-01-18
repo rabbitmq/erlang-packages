@@ -8,7 +8,7 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: rabbitmq/erlang-packages/.github/workflows/gen-rpm-erlang-reusable-workflow.yml@main
+    uses: ./.github/workflows/gen-rpm-erlang-reusable-workflow.yml@main
     with:
       erlang_major: '26'
       distribution_name: 'el'

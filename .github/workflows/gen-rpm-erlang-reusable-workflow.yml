@@ -15,6 +15,15 @@ on:
         description: 'Distribution version (e.g. 8, 9)'
         required: true
         type: string
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: true
+      GPG_PRIVATE_KEY_PASSPHRASE:
+        required: true
+      GPG_PRIVATE_KEY_ID:
+        required: true
+      CI_GITHUB_TOKEN:
+        required: true
 
 env:
   ERLANG_MAJOR: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }}

@@ -22,6 +22,16 @@ on:
         required: true
       GPG_PRIVATE_KEY_ID:
         required: true
+      PACKAGECLOUD_USERNAME:
+        required: true
+      PACKAGECLOUD_TOKEN:
+        required: true
+      CLOUDSMITH_USERNAME:
+        required: true
+      CLOUDSMITH_ORGANIZATION:
+        required: true
+      CLOUDSMITH_API_KEY:
+        required: true
       CI_GITHUB_TOKEN:
         required: true
 

@@ -8,7 +8,7 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: ./.github/workflows/gen-rpm-erlang-reusable-workflow.yml@main
+    uses: ./.github/workflows/gen-rpm-erlang-reusable-workflow.yml
     with:
       erlang_major: '24'
       distribution_name: 'el'

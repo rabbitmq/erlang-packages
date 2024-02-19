@@ -9,7 +9,7 @@ on:
         type: string
         default: 'OTP-25.3.2.7'
   repository_dispatch:
-    types: [new_§project§_§major_label§]
+    types: [new_§project§_§major_label§_release]
 
 jobs:
   call-reusable-workflow:

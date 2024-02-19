@@ -9,7 +9,7 @@ on:
         type: string
         default: 'v1.15.7'
   repository_dispatch:
-    types: [new_elixir_1_15]
+    types: [new_elixir_1_15_release]
 
 jobs:
   call-reusable-workflow:

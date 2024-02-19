@@ -9,7 +9,7 @@ on:
         type: string
         default: 'OTP-25.3.2.7'
   repository_dispatch:
-    types: [new_erlang_24]
+    types: [new_erlang_24_release]
 
 jobs:
   call-reusable-workflow:

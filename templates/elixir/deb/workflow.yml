@@ -9,7 +9,7 @@ on:
         type: string
         default: 'v1.15.7'
   repository_dispatch:
-    types: [new_§project§_§major_label§]
+    types: [new_§project§_§major_label§_release]
 
 jobs:
   call-reusable-workflow:

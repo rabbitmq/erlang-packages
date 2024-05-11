@@ -102,7 +102,7 @@ EOF
 # Ubuntu 22.04 creates ZSTD-compressed files, which Cloudsmith does not support yet.
 # The "--git-builder='debuild --preserve-envvar PATH -i -I'" option in
 # the gbp buildpackage command is mandatory for the patched dpkg-deb script to be used.
-echo '#!/bin/bash            
+echo '#!/bin/bash
 /usr/bin/dpkg-deb -Zxz $@' > /usr/local/bin/dpkg-deb
 chmod u+x /usr/local/bin/dpkg-deb
 

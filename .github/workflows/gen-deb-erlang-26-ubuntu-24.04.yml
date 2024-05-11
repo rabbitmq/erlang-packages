@@ -1,0 +1,24 @@
+name: Build Erlang 26 for Ubuntu 22.04
+
+on:
+  workflow_dispatch:
+    inputs:
+      erlang_tag:
+        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        required: true
+        type: string
+        default: 'OTP-25.3.2.7'
+  repository_dispatch:
+    types: [new_erlang_26_release]
+
+jobs:
+  call-reusable-workflow:
+    uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
+    with:
+      erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
+      erlang_major: '26'
+      distribution_name: 'ubuntu'
+      distribution_codename: 'noble'
+      distribution_version: '24.04'
+      ppa_repository: 'rabbitmq-erlang'
+    secrets: inherit

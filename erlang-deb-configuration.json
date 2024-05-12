@@ -5,7 +5,8 @@
   { "name": "debian", "codename" : "trixie", "version" : "trixie" },
   { "name": "ubuntu", "codename" : "bionic", "version" : "18.04" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
-  { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" }
+  { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" },
+  { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
 ],
   "packages" : [
     {"major": "24",

@@ -16,6 +16,6 @@
         "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"],
         "ppa_repository" : "rabbitmq-erlang-25"},
     {"major": "26",
-        "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"],
+        "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang"}
 ]}

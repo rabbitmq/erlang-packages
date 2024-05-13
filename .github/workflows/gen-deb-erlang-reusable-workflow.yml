@@ -95,7 +95,7 @@ jobs:
           DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
           DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
           DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
-          DISTRIBUTION_VERSIONS: '18.04 20.04 22.04'
+          DISTRIBUTION_VERSIONS: '18.04 20.04 22.04 24.04'
           SOURCE_PROJECT_NAME: erlang
   build-binary-package:
     runs-on: ubuntu-22.04

@@ -1,6 +1,6 @@
 FROM rockylinux:8
 
 RUN dnf update -y
-RUN dnf install -y autoconf clang m4 openssl-devel ncurses-devel rpm-build rpmdevtools rpmlint tar wget zlib-devel systemd-devel make
+RUN dnf install -y autoconf clang m4 openssl-devel ncurses-devel rpm-build rpmdevtools rpmlint tar wget zlib-devel systemd-devel make rpm-sign
 
 RUN mkdir /build

@@ -4,7 +4,8 @@
   { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
   { "name": "debian", "codename" : "trixie", "version" : "trixie" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
-  { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" }
+  { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" },
+  { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
 ],
   "packages" : [
     {"major": "1.15", "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"]}

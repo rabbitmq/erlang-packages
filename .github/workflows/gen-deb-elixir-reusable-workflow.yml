@@ -87,7 +87,7 @@ jobs:
           DISTRIBUTION_NAME: ${{ inputs.distribution_name }}
           DISTRIBUTION_CODENAME: ${{ inputs.distribution_codename }}
           DISTRIBUTION_VERSION: ${{ inputs.distribution_version }}
-          DISTRIBUTION_VERSIONS: '20.04 22.04'
+          DISTRIBUTION_VERSIONS: '20.04 22.04 24.04'
           SOURCE_PROJECT_NAME: elixir-lang
           ERLANG_VERSION: '1:25*'
   build-binary-package:

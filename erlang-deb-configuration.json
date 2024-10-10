@@ -2,7 +2,6 @@
   { "name": "debian", "codename" : "buster", "version" : "buster" },
   { "name": "debian", "codename" : "bullseye", "version" : "bullseye" },
   { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
-  { "name": "debian", "codename" : "trixie", "version" : "trixie" },
   { "name": "ubuntu", "codename" : "bionic", "version" : "18.04" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
   { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" },
@@ -13,9 +12,9 @@
         "distributions" : ["buster", "bullseye", "focal", "jammy"],
         "ppa_repository" : "rabbitmq-erlang-24"},
     {"major": "25",
-        "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy"],
+        "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy"],
         "ppa_repository" : "rabbitmq-erlang-25"},
     {"major": "26",
-        "distributions" : ["buster", "bullseye", "bookworm", "trixie", "focal", "jammy", "noble"],
+        "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang"}
 ]}

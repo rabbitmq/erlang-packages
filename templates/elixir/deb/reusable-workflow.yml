@@ -12,11 +12,11 @@ on:
         required: true
         type: string
       distribution_codename:
-        description: 'Distribution codename (e.g. jammy, trixie)'
+        description: 'Distribution codename (e.g. jammy, bookworm)'
         required: true
         type: string
       distribution_version:
-        description: 'Distribution version (e.g. 22.04, trixie)'
+        description: 'Distribution version (e.g. 22.04, bookworm)'
         required: true
         type: string
 

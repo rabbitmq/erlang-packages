@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       erlang_major:
-        description: 'Major version of Erlang (e.g. 25)'
+        description: 'Major version of Erlang (e.g. 27)'
         required: true
         type: string
       distribution_name:
@@ -21,10 +21,6 @@ on:
       GPG_PRIVATE_KEY_PASSPHRASE:
         required: true
       GPG_PRIVATE_KEY_ID:
-        required: true
-      PACKAGECLOUD_USERNAME:
-        required: true
-      PACKAGECLOUD_TOKEN:
         required: true
       CLOUDSMITH_USERNAME:
         required: true
@@ -60,14 +56,6 @@ jobs:
         run: ci/erlang/rpm/build-package.sh
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
-      - name: Push packages to Packagecloud
-        uses: computology/packagecloud-github-action@v0.9
-        with:
-          PACKAGE-NAME: 'packages/erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm' 
-          PACKAGECLOUD-USERNAME: ${{ secrets.PACKAGECLOUD_USERNAME }}
-          PACKAGECLOUD-REPONAME: erlang
-          PACKAGECLOUD-DISTRO: '${{ inputs.distribution_name }}/${{ inputs.distribution_version }}'
-          PACKAGECLOUD-TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
       - name: Delete latest versions on Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:
@@ -101,7 +89,7 @@ jobs:
           echo $version
           echo "erlang_version=$version" >> $GITHUB_ENV
       - name: Push to GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: packages/*
           name: ${{ env.erlang_version }}

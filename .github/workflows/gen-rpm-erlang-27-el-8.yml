@@ -1,16 +1,16 @@
-name: Build Erlang 24 for el/8
+name: Build Erlang 27 for el/8
 
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [rpm_erlang_24]
+    types: [rpm_erlang_27]
 
 
 jobs:
   call-reusable-workflow:
     uses: ./.github/workflows/gen-rpm-erlang-reusable-workflow.yml
     with:
-      erlang_major: '24'
+      erlang_major: '27'
       distribution_name: 'el'
       distribution_version: '8'
     secrets: inherit

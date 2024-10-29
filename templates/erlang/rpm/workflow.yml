@@ -13,4 +13,5 @@ jobs:
       erlang_major: '§major§'
       distribution_name: '§distribution_name§'
       distribution_version: '§distribution_version§'
+      publish_to_package_repos: '§publish_to_package_repos§'
     secrets: inherit

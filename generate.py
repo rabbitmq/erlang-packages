@@ -43,6 +43,7 @@ workflow_template_file.close()
 for package in packages:
     major_version = package["major"]
     major_label = major_version.replace(".", "_")
+    publish_to_package_repos = package["publish_to_package_repos"]
     supported_distributions = package["distributions"]
     ppa_repository = package.get("ppa_repository", "")
     for distribution in distributions:
@@ -60,12 +61,13 @@ for package in packages:
                 .replace("§distribution_name§", distribution_name)\
                 .replace("§distribution_codename§", distribution_codename)\
                 .replace("§distribution_version§", distribution_version)\
-                .replace("§ppa_repository§", ppa_repository)
+                .replace("§ppa_repository§", ppa_repository)\
+                .replace("§publish_to_package_repos§", str(publish_to_package_repos).lower())
             workflow_filename = f"gen-{package_type}-{project}-{major_version}-{distribution_name}-{distribution_version}.yml"
             workflow_file = open(os.path.join(generated_directory, workflow_filename), "w") 
             workflow_file.write(workflow)
             workflow_file.close() 
-         
+
 workflow_directory = ".github/workflows"
 os.system(f"rm -f {workflow_directory}/gen-{package_type}-{project}-*.yml")
 os.system("cp " + generated_directory + "/* " + workflow_directory)

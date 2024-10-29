@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        description: 'Erlang OTP tag (e.g. OTP-26.2.5.4)'
         required: true
         type: string
-        default: 'OTP-25.3.2.7'
+        default: 'OTP-26.2.5.4'
   repository_dispatch:
     types: [new_erlang_25_release]
 
@@ -21,4 +21,5 @@ jobs:
       distribution_codename: 'focal'
       distribution_version: '20.04'
       ppa_repository: 'rabbitmq-erlang-25'
+      publish_to_package_repos: 'true'
     secrets: inherit

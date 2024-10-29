@@ -7,5 +7,5 @@
   { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
 ],
   "packages" : [
-    {"major": "1.15", "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy"]}
+    {"major": "1.15", "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy"], "publish_to_package_repos": true}
 ]}

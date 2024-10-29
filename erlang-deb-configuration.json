@@ -2,7 +2,6 @@
   { "name": "debian", "codename" : "buster", "version" : "buster" },
   { "name": "debian", "codename" : "bullseye", "version" : "bullseye" },
   { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
-  { "name": "ubuntu", "codename" : "bionic", "version" : "18.04" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
   { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" },
   { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }

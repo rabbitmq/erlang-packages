@@ -1,14 +1,15 @@
-#!/bin/python
+#!/usr/bin/env python3
 
 import sys
 import json
 import requests
 import os
+import re
 
 project = sys.argv[1]
 org_repository = sys.argv[2]
 
-configuration_filename = project + "-deb-configuration.json"
+configuration_filename = project + "-rpm-configuration.json"
 releases_filename = project + "-releases.json"
 
 with open(configuration_filename, 'r') as f:
@@ -17,15 +18,16 @@ with open(configuration_filename, 'r') as f:
 majors = list(map(lambda p: p["major"], packages))
 
 print("Getting latest releases...")
-releases = requests.get(
-        "https://api.github.com/repos/" + org_repository + "/releases",
+tags0 = requests.get(
+        "https://api.github.com/repos/" + org_repository + "/tags",
+        params = {'per_page': 100},
         headers = {'X-GitHub-Api-Version' : '2022-11-28', 'Accept' : 'application/vnd.github+json'}
         ).json()
 
 with open(releases_filename, 'r') as f:
   old_latests = json.load(f)
 
-print("Current state:")
+print("Current state (from {}):".format(releases_filename))
 print(old_latests)
 
 new_latests = dict()
@@ -37,8 +39,21 @@ headers = {
 
 has_changed = False
 
-for release in releases:
-    tag = release["tag_name"]
+def filter_final_releases(rel):
+    p = re.compile("^OTP\-")
+    if rel.get("name") is None:
+        return False
+    if p.match(rel.get("name")) is None:
+        return False
+    return True
+
+tags = filter(filter_final_releases, tags0)
+
+for tag_data in tags:
+    print("Release: {}".format(tag_data))
+    tag = tag_data.get("name", None)
+    if tag is None:
+        pass
     curated_tag = tag.replace("OTP-", "").replace("v", "")
     for major in majors:
         if (curated_tag.startswith(major)):
@@ -60,7 +75,7 @@ for release in releases:
                         json = body,
                         headers = headers)
                 if not response.ok:
-                    print("Notification failed with status status: " + response.status_code)
+                    print("Notification failed with status status: {}".format(response.status_code))
 
 if has_changed:
     print("New state:")

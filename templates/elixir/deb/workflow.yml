@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       elixir_tag:
-        description: 'Elixir tag (e.g. v1.15.7)'
+        description: 'Elixir tag (e.g. v1.17.3)'
         required: true
         type: string
-        default: 'v1.15.7'
+        default: 'v1.17.3'
   repository_dispatch:
     types: [new_§project§_§major_label§_release]
 

@@ -1,5 +1,4 @@
 { "distributions" : [
-  { "name": "debian", "codename" : "buster", "version" : "buster" },
   { "name": "debian", "codename" : "bullseye", "version" : "bullseye" },
   { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
@@ -7,5 +6,5 @@
   { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
 ],
   "packages" : [
-    {"major": "1.15", "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy"], "publish_to_package_repos": true}
+    {"major": "1.17", "distributions" : ["bullseye", "bookworm", "focal", "jammy", "noble"], "publish_to_package_repos": true}
 ]}

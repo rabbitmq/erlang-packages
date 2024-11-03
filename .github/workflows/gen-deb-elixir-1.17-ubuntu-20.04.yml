@@ -1,4 +1,4 @@
-name: Build Elixir 1.15 for Debian Bullseye
+name: Build Elixir 1.17 for Ubuntu 20.04
 
 on:
   workflow_dispatch:
@@ -9,14 +9,14 @@ on:
         type: string
         default: 'v1.15.7'
   repository_dispatch:
-    types: [new_elixir_1_15_release]
+    types: [new_elixir_1_17_release]
 
 jobs:
   call-reusable-workflow:
     uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-elixir-reusable-workflow.yml@main
     with:
       elixir_tag: ${{ inputs.elixir_tag != '' && inputs.elixir_tag || github.event.client_payload.tag }}
-      distribution_name: 'debian'
-      distribution_codename: 'bullseye'
-      distribution_version: 'bullseye'
+      distribution_name: 'ubuntu'
+      distribution_codename: 'focal'
+      distribution_version: '20.04'
     secrets: inherit

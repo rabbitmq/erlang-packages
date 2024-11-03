@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       elixir_tag:
-        description: 'Elixir tag (e.g. v1.15.7)'
+        description: 'Elixir tag (e.g. v1.17.3)'
         required: true
         type: string
       distribution_name:

@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        description: 'Erlang OTP tag (e.g. OTP-26.2.5.5)'
         required: true
         type: string
       erlang_major:
-        description: 'Major version of Erlang (e.g. 25)'
+        description: 'Major version of Erlang (e.g. 26)'
         required: true
         type: string
       distribution_name:

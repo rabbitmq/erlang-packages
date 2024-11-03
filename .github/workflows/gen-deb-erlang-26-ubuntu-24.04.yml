@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-26.2.5.4)'
+        description: 'Erlang OTP tag (e.g. OTP-26.2.5.5)'
         required: true
         type: string
-        default: 'OTP-26.2.5.4'
+        default: 'OTP-26.2.5.5'
   repository_dispatch:
     types: [new_erlang_26_release]
 

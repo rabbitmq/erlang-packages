@@ -86,8 +86,6 @@ apt-get install -y erlang-base \
                   erlang-runtime-tools erlang-snmp erlang-ssl \
                   erlang-syntax-tools erlang-tftp erlang-tools erlang-xmerl
 
-apt-get install rabbitmq-server -y --fix-missing
-
 # --------------------------------------------------------------------
 # Check PGP signing key.
 # --------------------------------------------------------------------

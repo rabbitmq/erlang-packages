@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       elixir_tag:
-        description: 'Elixir tag (e.g. v1.15.7)'
+        description: 'Elixir tag (e.g. v1.17.3)'
         required: true
         type: string
       distribution_name:
@@ -12,11 +12,11 @@ on:
         required: true
         type: string
       distribution_codename:
-        description: 'Distribution codename (e.g. jammy, bookworm)'
+        description: 'Distribution codename (e.g. noble, bookworm)'
         required: true
         type: string
       distribution_version:
-        description: 'Distribution version (e.g. 22.04, bookworm)'
+        description: 'Distribution version (e.g. 24.04, bookworm)'
         required: true
         type: string
 

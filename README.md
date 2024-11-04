@@ -44,7 +44,12 @@ Built from [Elixir packages for Debian and Ubuntu](https://github.com/rabbitmq/e
 (c) 2023-2024 Broadcom. All Rights Reserved.
 The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
 
-This package, the Concourse Cloudsmith Resource, is licensed
-under the Mozilla Public License 2.0 ("MPL").
+The contents of this repository are licensed under the Mozilla Public License 2.0 ("MPL"),
+same as RabbitMQ.
+
+The packages produced by this repository are licenced under:
+
+1. Erlang: [Apache 2.0](https://github.com/erlang/otp/blob/master/LICENSE.txt)
+2. Elixir: [Apache 2.0](https://github.com/elixir-lang/elixir/blob/main/LICENSE)
 
 See [LICENSE](./LICENSE).

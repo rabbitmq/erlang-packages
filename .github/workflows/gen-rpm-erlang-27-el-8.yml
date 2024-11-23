@@ -13,5 +13,5 @@ jobs:
       erlang_major: '27'
       distribution_name: 'el'
       distribution_version: '8'
-      publish_to_package_repos: 'false'
+      publish_to_package_repos: 'true'
     secrets: inherit

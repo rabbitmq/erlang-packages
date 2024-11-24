@@ -13,7 +13,7 @@
         "publish_to_package_repos": true},
     {"major": "26",
         "distributions" : ["buster", "bullseye", "bookworm", "focal", "jammy", "noble"],
-        "ppa_repository" : "rabbitmq-erlang-26",
+        "ppa_repository" : "rabbitmq-erlang",
         "publish_to_package_repos": true},
     {"major": "27",
         "distributions" : ["bookworm", "jammy", "noble"],

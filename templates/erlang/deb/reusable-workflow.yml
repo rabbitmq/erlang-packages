@@ -73,7 +73,8 @@ jobs:
         run: |
           apt-get update
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
-      - uses: actions/checkout@v4
+      - name: Clone current repository
+        uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
         uses: actions/checkout@v4
         with:
@@ -119,6 +120,8 @@ jobs:
           curl -fL https://launchpad.net/ubuntu/+archive/primary/+files/autoconf_2.72-3_all.deb -o "/tmp/autoconf.deb"
           dpkg -i "/tmp/autoconf.deb"
           rm "/tmp/autoconf.deb"
+      - name: Clone current repository
+        uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
         uses: actions/checkout@v4
         with:

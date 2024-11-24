@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-25.3.2.7)'
+        description: 'Erlang OTP tag (e.g. OTP-27.1.2)'
         required: true
         type: string
       erlang_major:
-        description: 'Major version of Erlang (e.g. 25)'
+        description: 'Major version of Erlang (e.g. 27)'
         required: true
         type: string
       distribution_name:
@@ -20,11 +20,11 @@ on:
         required: true
         type: string
       distribution_version:
-        description: 'Distribution version (e.g. 22.04, bookworm)'
+        description: 'Distribution version (e.g. 24.04, bookworm)'
         required: true
         type: string
       ppa_repository:
-        description: 'PPA repository for Ubuntu distributions (e.g. rabbitmq-erlang-25)'
+        description: 'PPA repository for Ubuntu distributions (e.g. rabbitmq-erlang-27)'
         required: true
         type: string
       publish_to_package_repos:

@@ -111,7 +111,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
+          apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git curl
       - name: "Install autoconf 2.72 for Erlang 27"
         if: ${{ inputs.erlang_major == '27' }}
         run: |

@@ -32,11 +32,6 @@ on:
         type: string
         required: false
         default: 'false'
-      requires_autoconf_272:
-        description: "Does this Erlang series require autoconf 2.72?"
-        type: string
-        require: false
-        default: 'false'
 
 env:
   ERLANG_TAG: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
@@ -117,7 +112,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
-      - name: Install autoconf 2.72 (if necessary)
+      - name: "Install autoconf 2.72 for Erlang 27"
         if: ${{ inputs.erlang_major == '27' }}
         run: ci/erlang/deb/upgrade-autoconf-to-2.27.sh
       - uses: actions/checkout@v4

@@ -40,7 +40,7 @@ env:
 
 jobs:
   update-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
@@ -64,7 +64,7 @@ jobs:
           git push origin OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
   build-source-package:
     if: inputs.distribution_name == 'ubuntu'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: update-package
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
@@ -105,7 +105,7 @@ jobs:
           DISTRIBUTION_VERSIONS: '20.04 22.04 24.04'
           SOURCE_PROJECT_NAME: erlang
   build-binary-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: update-package
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
@@ -173,7 +173,7 @@ jobs:
           globs: '*.deb'
           tags: erlang,erlang-${{ inputs.erlang_major }}.x
   test-binary-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: build-binary-package
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}

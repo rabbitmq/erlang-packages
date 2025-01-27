@@ -41,7 +41,7 @@ env:
 
 jobs:
   build-binary-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
     steps:

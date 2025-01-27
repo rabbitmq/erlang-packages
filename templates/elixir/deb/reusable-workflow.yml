@@ -27,7 +27,7 @@ env:
 
 jobs:
   update-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
@@ -51,7 +51,7 @@ jobs:
           git push origin ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
   build-source-package:
     if: inputs.distribution_name == 'ubuntu'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: update-package
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
@@ -91,7 +91,7 @@ jobs:
           SOURCE_PROJECT_NAME: elixir-lang
           ERLANG_VERSION: '1:25*'
   build-binary-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: update-package
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}

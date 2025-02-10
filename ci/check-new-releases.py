@@ -5,12 +5,17 @@ import json
 import requests
 import os
 import re
+import os.path
 
 project = sys.argv[1]
 org_repository = sys.argv[2]
 
 configuration_filename = project + "-rpm-configuration.json"
 releases_filename = project + "-releases.json"
+
+
+if os.path.isfile(configuration_filename) is False:
+  configuration_filename = project + "-deb-configuration.json"
 
 with open(configuration_filename, 'r') as f:
   packages = json.load(f)["packages"]
@@ -33,17 +38,23 @@ print(old_latests)
 new_latests = dict()
 
 headers = {
-        "Accept": "application/vnd.github.v3+json",
+        "Accept": "application/vnd.github.v3+json"
         "Authorization": "token " + os.environ['CI_GITHUB_TOKEN']
         }
 
 has_changed = False
 
+def curate_tag(tag):
+    return tag.replace("OTP-", "").replace("v", "")
+
 def filter_final_releases(rel):
-    p = re.compile("^OTP\-")
     if rel.get("name") is None:
         return False
-    if p.match(rel.get("name")) is None:
+    tag = rel.get("name")
+    curated_tag = curate_tag(tag)
+    if curated_tag[:1].isdigit() is False:
+        return False
+    if curated_tag[-1].isdigit() is False:
         return False
     return True
 
@@ -54,7 +65,7 @@ for tag_data in tags:
     tag = tag_data.get("name", None)
     if tag is None:
         pass
-    curated_tag = tag.replace("OTP-", "").replace("v", "")
+    curated_tag = curate_tag(tag)
     for major in majors:
         if (curated_tag.startswith(major)):
             majors.remove(major)

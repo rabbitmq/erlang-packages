@@ -38,7 +38,7 @@ print(old_latests)
 new_latests = dict()
 
 headers = {
-        "Accept": "application/vnd.github.v3+json"
+        "Accept": "application/vnd.github.v3+json",
         "Authorization": "token " + os.environ['CI_GITHUB_TOKEN']
         }
 

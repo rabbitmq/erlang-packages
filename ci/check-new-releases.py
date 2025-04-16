@@ -39,7 +39,7 @@ new_latests = dict()
 
 headers = {
         "Accept": "application/vnd.github.v3+json",
-        "Authorization": "token " + os.environ['CI_GITHUB_TOKEN']
+        "Authorization": "token " + os.environ['MK_RELEASE_AUTOMATION_TOKEN']
         }
 
 has_changed = False

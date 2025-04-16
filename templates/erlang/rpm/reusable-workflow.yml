@@ -33,7 +33,7 @@ on:
         required: true
       CLOUDSMITH_API_KEY:
         required: true
-      CI_GITHUB_TOKEN:
+      MK_RELEASE_AUTOMATION_TOKEN:
         required: true
 
 env:
@@ -102,7 +102,7 @@ jobs:
           name: ${{ env.erlang_version }}
           tag_name: v${{ env.erlang_version }}
           target_commitish: erlang-${{ env.ERLANG_MAJOR }}
-          token: ${{ secrets.CI_GITHUB_TOKEN }}
+          token: ${{ secrets.MK_RELEASE_AUTOMATION_TOKEN }}
           repository: rabbitmq/erlang-rpm
           body: >-
             Zero dependency Erlang/OTP ${{ env.erlang_version }} packages

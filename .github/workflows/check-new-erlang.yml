@@ -8,7 +8,7 @@ on:
 env:
   MK_RELEASE_AUTOMATION_TOKEN: ${{ secrets.MK_RELEASE_AUTOMATION_ERLANG }}
   GIT_AUTHOR_NAME: ${{ secrets.RABBITMQ_CI_USERNAME }}
-  GIT_AUTHOR_EMAIL: ${{ secrets.RABBITMQ_CI_EMAIL }}
+  GIT_AUTHOR_EMAIL: ${{ variables.TEAM_RABBITMQ_EMAIL }}
 
 jobs:
   check:

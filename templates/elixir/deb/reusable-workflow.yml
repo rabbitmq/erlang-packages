@@ -23,7 +23,7 @@ on:
 env:
   ELIXIR_TAG: ${{ inputs.elixir_tag != '' && inputs.elixir_tag || github.event.client_payload.tag }}
   GIT_AUTHOR_NAME: ${{ secrets.RABBITMQ_CI_USERNAME }}
-  GIT_AUTHOR_EMAIL: ${{ secrets.RABBITMQ_CI_EMAIL }}
+  GIT_AUTHOR_EMAIL: ${{ variables.TEAM_RABBITMQ_EMAIL }}
 
 jobs:
   update-package:
@@ -42,7 +42,7 @@ jobs:
           repository: rabbitmq/elixir-debian-package
           ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: 'package-sources'
-          ssh-key: ${{ secrets.RABBITMQ_CI_PRIVATE_KEY }}
+          ssh-key: ${{ secrets.MK_RELEASE_AUTOMATION_PRIVATE_KEY }}
       - name: Update package
         run: ci/elixir/deb/update-package.sh
       - name: Push Changes to package repository

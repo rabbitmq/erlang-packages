@@ -18,5 +18,9 @@
     {"major": "27",
         "distributions" : ["bookworm", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang-27",
+        "publish_to_package_repos": true},
+    {"major": "28",
+        "distributions" : ["bookworm", "jammy", "noble"],
+        "ppa_repository" : "rabbitmq-erlang-28",
         "publish_to_package_repos": true}
 ]}

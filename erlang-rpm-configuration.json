@@ -5,6 +5,5 @@
   "packages" : [
     {"major": "25", "distributions" : ["el8", "el9"], "publish_to_package_repos": true},
     {"major": "26", "distributions" : ["el8", "el9"], "publish_to_package_repos": true},
-    {"major": "27", "distributions" : ["el8", "el9"], "publish_to_package_repos": true},
-    {"major": "28", "distributions" : ["el8", "el9"], "publish_to_package_repos": true}
+    {"major": "27", "distributions" : ["el8", "el9"], "publish_to_package_repos": true}
 ]}

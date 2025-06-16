@@ -20,6 +20,6 @@ jobs:
       distribution_name: 'ubuntu'
       distribution_codename: 'noble'
       distribution_version: '24.04'
-      ppa_repository: 'rabbitmq-erlang'
+      ppa_repository: 'rabbitmq-erlang-26'
       publish_to_package_repos: 'true'
     secrets: inherit

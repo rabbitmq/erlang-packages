@@ -1,5 +1,4 @@
 { "distributions" : [
-  { "name": "debian", "codename" : "buster", "version" : "buster" },
   { "name": "debian", "codename" : "bullseye", "version" : "bullseye" },
   { "name": "debian", "codename" : "bookworm", "version" : "bookworm" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },

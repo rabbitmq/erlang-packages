@@ -8,7 +8,7 @@
 ],
   "packages" : [
     {"major": "26",
-        "distributions" : ["bullseye", "bookworm", "trixie", "focal", "jammy", "noble"],
+        "distributions" : ["bullseye", "bookworm", "focal", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang-26",
         "publish_to_package_repos": true},
     {"major": "27",

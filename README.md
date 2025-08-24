@@ -41,7 +41,7 @@ Built from [Elixir packages for Debian and Ubuntu](https://github.com/rabbitmq/e
 
 # License and Copyright
 
-(c) 2023-2024 Broadcom. All Rights Reserved.
+(c) 2023-2025 Broadcom. All Rights Reserved.
 The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
 
 The contents of this repository are licensed under the Mozilla Public License 2.0 ("MPL"),

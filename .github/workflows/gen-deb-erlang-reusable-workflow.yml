@@ -42,15 +42,15 @@ jobs:
   update-package:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -75,15 +75,15 @@ jobs:
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
       - name: Clone current repository
         # clones the current repository by default
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -123,15 +123,15 @@ jobs:
           rm "/tmp/autoconf.deb"
       - name: Clone current repository
         # clones the current repository by default
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: 'erlang-sources'
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -178,9 +178,9 @@ jobs:
     container:
       image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}

@@ -43,8 +43,6 @@ cd ..
 # Setup RabbitMQ's Erlang Debian packages repository.
 # --------------------------------------------------------------------
 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E495BB49CC4BBE5B
-
 keyring_location=/usr/share/keyrings/rabbitmq-rabbitmq-erlang-archive-keyring.gpg
 curl -1sLf "https://dl.cloudsmith.io/public/$CLOUDSMITH_ORG/$CLOUDSMITH_REPOSITORY/gpg.E495BB49CC4BBE5B.key" |  gpg --dearmor > ${keyring_location}
 curl -1sLf "https://dl.cloudsmith.io/public/$CLOUDSMITH_ORG/$CLOUDSMITH_REPOSITORY/config.deb.txt?distro=$(lsb_release -is | tr '[:upper:]' '[:lower:]')&codename=$(lsb_release -cs)" | tee --append /etc/apt/sources.list.d/rabbitmq-rabbitmq-erlang.list

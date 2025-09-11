@@ -3,6 +3,5 @@
   { "name": "el", "codename" : "el9", "version" : "9" }
 ],
   "packages" : [
-    {"major": "26", "distributions" : ["el8", "el9"], "publish_to_package_repos": true},
     {"major": "27", "distributions" : ["el8", "el9"], "publish_to_package_repos": true}
 ]}

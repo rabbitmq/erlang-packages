@@ -45,9 +45,9 @@ jobs:
     container:
       image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check out Erlang RPM package repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: rabbitmq/erlang-rpm
           ref: erlang-${{ env.ERLANG_MAJOR }}

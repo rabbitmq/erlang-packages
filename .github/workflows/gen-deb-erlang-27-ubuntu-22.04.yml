@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-27.1.2)'
+        description: 'Erlang OTP tag (e.g. OTP-27.3.4.4)'
         required: true
         type: string
         default: 'OTP-27.1.2'

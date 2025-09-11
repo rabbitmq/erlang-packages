@@ -7,10 +7,6 @@
   { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
 ],
   "packages" : [
-    {"major": "26",
-        "distributions" : ["bullseye", "bookworm", "focal", "jammy", "noble"],
-        "ppa_repository" : "rabbitmq-erlang-26",
-        "publish_to_package_repos": true},
     {"major": "27",
         "distributions" : ["bookworm", "trixie", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang",

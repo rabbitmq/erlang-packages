@@ -29,15 +29,15 @@ jobs:
   update-package:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: elixir-lang/elixir
           ref: ${{ env.ELIXIR_TAG }}
           path: 'elixir-sources'
       - name: Check out Debian Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: rabbitmq/elixir-debian-package
           ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -60,15 +60,15 @@ jobs:
         run: |
           apt-get update
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Check out Elixir source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: elixir-lang/elixir
           ref: ${{ env.ELIXIR_TAG }}
           path: 'elixir-sources'
       - name: Check out Elixir Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: rabbitmq/elixir-debian-package
           ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -100,15 +100,15 @@ jobs:
         run: |
           apt-get update
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Check out Elixir source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: elixir-lang/elixir
           ref: ${{ env.ELIXIR_TAG }}
           path: 'elixir-sources'
       - name: Check out Elixir Debian package repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: rabbitmq/elixir-debian-package
           ref: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}

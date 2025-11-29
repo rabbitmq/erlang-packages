@@ -197,7 +197,7 @@ jobs:
           name: Erlang/OTP ${{ env.erlang_version }} for ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
           tag_name: ${{ env.erlang_version }}-${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
           target_commitish: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
-          token: ${{ secrets.MK_RELEASE_AUTOMATION_TOKEN }}
+          token: ${{ secrets.MK_RELEASE_AUTOMATION_ERLANG }}
           repository: rabbitmq/erlang-debian-package
   test-binary-package:
     runs-on: ubuntu-24.04

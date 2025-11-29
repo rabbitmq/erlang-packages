@@ -189,7 +189,7 @@ jobs:
           name: erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
           path: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
           retention-days: 7
-      - name: Push to GitHub Release
+      - name: Create a GitHub release
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         uses: softprops/action-gh-release@v2
         with:

@@ -172,3 +172,30 @@ jobs:
           local_path: packages
           globs: '*.deb'
           tags: erlang,erlang-${{ inputs.erlang_major }}.x
+      - name: Extract Erlang version from tag
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        run: |
+          version="${ERLANG_TAG#OTP-}"
+          echo "erlang_version=$version" >> $GITHUB_ENV
+      - name: Create tarball of .deb packages
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        run: |
+          cd packages
+          tar -czvf erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz *.deb
+      - name: Upload tarball as artifact
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
+          path: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
+          retention-days: 7
+      - name: Create a GitHub release
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
+          name: Erlang/OTP ${{ env.erlang_version }} for ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
+          tag_name: ${{ env.erlang_version }}-${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
+          target_commitish: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
+          token: ${{ secrets.MK_RELEASE_AUTOMATION_ERLANG }}
+          repository: rabbitmq/erlang-debian-package

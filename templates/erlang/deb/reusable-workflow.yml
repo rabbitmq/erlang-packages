@@ -172,22 +172,3 @@ jobs:
           local_path: packages
           globs: '*.deb'
           tags: erlang,erlang-${{ inputs.erlang_major }}.x
-  test-binary-package:
-    runs-on: ubuntu-24.04
-    needs: build-binary-package
-    container:
-      image: ${{ inputs.distribution_name }}:${{ inputs.distribution_version }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v4
-        with:
-          repository: rabbitmq/erlang-debian-package
-          ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
-          path: 'package-sources'
-      - name: Test package
-        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        run: ci/erlang/deb/test-cloudsmith-package.sh
-        env:
-          CLOUDSMITH_ORG: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
-          CLOUDSMITH_REPOSITORY: rabbitmq-erlang

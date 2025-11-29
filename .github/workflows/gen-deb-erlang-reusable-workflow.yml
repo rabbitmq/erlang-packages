@@ -172,6 +172,18 @@ jobs:
           local_path: packages
           globs: '*.deb'
           tags: erlang,erlang-${{ inputs.erlang_major }}.x
+      - name: Create tarball of .deb packages
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        run: |
+          cd packages
+          tar -czvf erlang-${{ inputs.erlang_major }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz *.deb
+      - name: Upload tarball as artifact
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: erlang-${{ inputs.erlang_major }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
+          path: packages/erlang-${{ inputs.erlang_major }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
+          retention-days: 7
   test-binary-package:
     runs-on: ubuntu-24.04
     needs: build-binary-package

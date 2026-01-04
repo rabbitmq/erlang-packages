@@ -124,7 +124,9 @@ jobs:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           ERLANG_VERSION: "1:25*"
       - name: Install Cloudsmith CLI
-        run: pip install cloudsmith-cli
+        run: |
+          apt-get install -y --no-install-recommends python3-pip
+          pip install --break-system-packages cloudsmith-cli
       - name: Push packages to Cloudsmith
         env:
           CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}

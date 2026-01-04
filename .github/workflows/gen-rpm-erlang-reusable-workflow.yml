@@ -73,7 +73,9 @@ jobs:
       #     keep_last_minor_patches: true
       - name: Install Cloudsmith CLI
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        run: pip install cloudsmith-cli
+        run: |
+          yum install -y python3-pip
+          pip3 install cloudsmith-cli
       - name: Push packages to Cloudsmith
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         env:

@@ -59,7 +59,7 @@ jobs:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
       # - name: Delete latest versions on Cloudsmith
       #   if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-      #   uses: docker://rabbitmqdevenv/cloudsmith-action:latest
+      #   uses: docker://pivotalrabbitmq/cloudsmith-action:latest
       #   with:
       #     username: ${{ secrets.CLOUDSMITH_USERNAME }}
       #     organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
@@ -71,21 +71,22 @@ jobs:
       #     name: '^erlang*'
       #     keep_last_n: 2
       #     keep_last_minor_patches: true
+      - name: Install Cloudsmith CLI
+        if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
+        run: pip install cloudsmith-cli
       - name: Push packages to Cloudsmith
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: docker://rabbitmqdevenv/cloudsmith-action:latest
-        with:
-          username: ${{ vars.CLOUDSMITH_USERNAME }}
-          organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
-          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
-          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
-          action: upload
-          republish: true
-          name: '^erlang*'
-          local_path: packages
-          globs: 'erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm'
-          tags: erlang,erlang-${{ inputs.erlang_major }}.x
+        env:
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+        run: |
+          bin/ci/upload_to_cloudsmith.sh \
+            --org "${{ vars.CLOUDSMITH_ORGANIZATION }}" \
+            --repo "rabbitmq-erlang" \
+            --distribution "${{ inputs.distribution_name }}/${{ inputs.distribution_version }}" \
+            --local-path packages \
+            --globs 'erlang-*.${{ inputs.distribution_name }}${{ inputs.distribution_version }}*.rpm' \
+            --tags "erlang,erlang-${{ inputs.erlang_major }}.x" \
+            --republish
       - name: Extract version
         run: |
           version=$(grep "^OTP_RELEASE" < package-sources/Makefile | cut -d "=" -f 2)

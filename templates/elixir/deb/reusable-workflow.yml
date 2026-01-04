@@ -123,16 +123,17 @@ jobs:
         env:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           ERLANG_VERSION: "1:25*"
+      - name: Install Cloudsmith CLI
+        run: pip install cloudsmith-cli
       - name: Push packages to Cloudsmith
-        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
-        with:
-          username: ${{ vars.CLOUDSMITH_USERNAME }}
-          organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}
-          repository: rabbitmq-erlang
-          api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
-          distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
-          action: upload
-          republish: true
-          local_path: packages
-          globs: "*.deb"
-          tags: "elixir"
+        env:
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+        run: |
+          bin/ci/upload_to_cloudsmith.sh \
+            --org "${{ vars.CLOUDSMITH_ORGANIZATION }}" \
+            --repo "rabbitmq-erlang" \
+            --distribution "${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}" \
+            --local-path packages \
+            --globs "*.deb" \
+            --tags "elixir" \
+            --republish

@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       erlang_tag:
-        description: 'Erlang OTP tag (e.g. OTP-27.3.4.4)'
+        description: "Erlang OTP tag (e.g. OTP-27.3.4.6)"
         required: true
         type: string
-        default: 'OTP-27.1.2'
+        default: "OTP-27.3.4.6"
   repository_dispatch:
     types: [new_erlang_27_release]
 
@@ -16,10 +16,10 @@ jobs:
     uses: rabbitmq/erlang-packages/.github/workflows/gen-deb-erlang-reusable-workflow.yml@main
     with:
       erlang_tag: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
-      erlang_major: '27'
-      distribution_name: 'ubuntu'
-      distribution_codename: 'jammy'
-      distribution_version: '22.04'
-      ppa_repository: 'rabbitmq-erlang'
-      publish_to_package_repos: 'true'
+      erlang_major: "27"
+      distribution_name: "ubuntu"
+      distribution_codename: "jammy"
+      distribution_version: "22.04"
+      ppa_repository: "rabbitmq-erlang"
+      publish_to_package_repos: "true"
     secrets: inherit

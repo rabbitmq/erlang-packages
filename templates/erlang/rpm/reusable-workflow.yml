@@ -27,10 +27,6 @@ on:
         required: true
       GPG_PRIVATE_KEY_ID:
         required: true
-      CLOUDSMITH_USERNAME:
-        required: true
-      CLOUDSMITH_ORGANIZATION:
-        required: true
       CLOUDSMITH_API_KEY:
         required: true
       MK_RELEASE_AUTOMATION_TOKEN:
@@ -79,8 +75,8 @@ jobs:
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:
-          username: ${{ secrets.CLOUDSMITH_USERNAME }}
-          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          username: ${{ vars.CLOUDSMITH_USERNAME }}
+          organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}
           repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_version }}

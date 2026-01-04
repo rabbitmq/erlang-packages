@@ -162,8 +162,8 @@ jobs:
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:
-          username: ${{ secrets.CLOUDSMITH_USERNAME }}
-          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          username: ${{ vars.CLOUDSMITH_USERNAME }}
+          organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}
           repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}
@@ -184,7 +184,7 @@ jobs:
           tar -czvf erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz *.deb
       - name: Upload tarball as artifact
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
           path: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz

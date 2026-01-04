@@ -126,8 +126,8 @@ jobs:
       - name: Push packages to Cloudsmith
         uses: docker://pivotalrabbitmq/cloudsmith-action:latest
         with:
-          username: ${{ secrets.CLOUDSMITH_USERNAME }}
-          organization: ${{ secrets.CLOUDSMITH_ORGANIZATION }}
+          username: ${{ vars.CLOUDSMITH_USERNAME }}
+          organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}
           repository: rabbitmq-erlang
           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
           distribution: ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}

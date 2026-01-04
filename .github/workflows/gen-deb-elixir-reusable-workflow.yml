@@ -124,7 +124,7 @@ jobs:
           SIGNING_KEY_ID: ${{ secrets.GPG_PRIVATE_KEY_ID }}
           ERLANG_VERSION: "1:25*"
       - name: Push packages to Cloudsmith
-        uses: docker://pivotalrabbitmq/cloudsmith-action:latest
+        uses: docker://rabbitmqdevenv/cloudsmith-action:latest
         with:
           username: ${{ vars.CLOUDSMITH_USERNAME }}
           organization: ${{ vars.CLOUDSMITH_ORGANIZATION }}

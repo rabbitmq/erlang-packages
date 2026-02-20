@@ -162,7 +162,7 @@ jobs:
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         run: |
           apt-get install -y --no-install-recommends python3-pip
-          pip install --break-system-packages cloudsmith-cli
+          pip install --break-system-packages cloudsmith-cli || pip install cloudsmith-cli
       - name: Push packages to Cloudsmith
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         env:
@@ -188,7 +188,7 @@ jobs:
           tar -czvf erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz *.deb
       - name: Upload tarball as artifact
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
           path: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz

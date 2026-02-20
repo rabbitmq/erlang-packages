@@ -162,7 +162,7 @@ jobs:
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         run: |
           apt-get install -y --no-install-recommends python3-pip
-          pip install --break-system-packages cloudsmith-cli
+          pip install --break-system-packages cloudsmith-cli || pip install cloudsmith-cli
       - name: Push packages to Cloudsmith
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
         env:

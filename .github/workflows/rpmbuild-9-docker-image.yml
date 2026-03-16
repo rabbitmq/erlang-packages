@@ -1,4 +1,4 @@
-name: Build Docker Image for CentOS 9
+name: Build Docker Image for el9
 
 on:
   workflow_dispatch:

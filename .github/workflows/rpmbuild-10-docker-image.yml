@@ -1,4 +1,4 @@
-name: Build Docker Image for Rocky Linux 10
+name: Build Docker Image for el10
 
 on:
   workflow_dispatch:

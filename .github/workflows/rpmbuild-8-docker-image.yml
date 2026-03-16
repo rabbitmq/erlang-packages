@@ -1,4 +1,4 @@
-name: Build Docker Image for CentOS 8
+name: Build Docker Image for el8
 
 on:
   workflow_dispatch:

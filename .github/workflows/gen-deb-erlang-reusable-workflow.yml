@@ -195,7 +195,7 @@ jobs:
           retention-days: 7
       - name: Create a GitHub release
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
           name: Erlang/OTP ${{ env.erlang_version }} for ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}

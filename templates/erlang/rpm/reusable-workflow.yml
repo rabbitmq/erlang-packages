@@ -36,7 +36,35 @@ env:
   ERLANG_MAJOR: ${{ inputs.erlang_major != '' && inputs.erlang_major || github.event.client_payload.major }}
 
 jobs:
+  check-existing-release:
+    runs-on: ubuntu-24.04
+    outputs:
+      proceed: ${{ steps.guard.outputs.proceed }}
+    steps:
+      - name: Check out Erlang RPM package repository
+        uses: actions/checkout@v6
+        with:
+          repository: rabbitmq/erlang-rpm
+          ref: erlang-${{ env.ERLANG_MAJOR }}
+          path: 'package-sources'
+      # Do not rebuild and republish a version that has already been released
+      - name: Skip the build if a release for this version already exists
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.MK_RELEASE_AUTOMATION_ERLANG }}
+        run: |
+          version=$(grep "^OTP_RELEASE" < package-sources/Makefile | cut -d "=" -f 2)
+          if gh release view "v${version}" --repo rabbitmq/erlang-rpm >/dev/null 2>&1; then
+            echo "Release v${version} already exists in rabbitmq/erlang-rpm; skipping to avoid republishing"
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No existing release v${version}; proceeding with the build"
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          fi
+
   build-binary-package:
+    needs: check-existing-release
+    if: ${{ needs.check-existing-release.outputs.proceed == 'true' }}
     runs-on: ubuntu-24.04
     container:
       image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}

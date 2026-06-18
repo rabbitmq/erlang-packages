@@ -42,7 +42,7 @@ jobs:
       proceed: ${{ steps.guard.outputs.proceed }}
     steps:
       - name: Check out Erlang RPM package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-rpm
           ref: erlang-${{ env.ERLANG_MAJOR }}
@@ -69,9 +69,9 @@ jobs:
     container:
       image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Check out Erlang RPM package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-rpm
           ref: erlang-${{ env.ERLANG_MAJOR }}

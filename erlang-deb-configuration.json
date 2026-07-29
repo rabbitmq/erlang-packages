@@ -15,5 +15,10 @@
         "enabled": false,
         "distributions" : ["bookworm", "trixie", "jammy", "noble"],
         "ppa_repository" : "rabbitmq-erlang",
+        "publish_to_package_repos": true},
+    {"major": "29",
+        "enabled": false,
+        "distributions" : ["bookworm", "trixie", "jammy", "noble"],
+        "ppa_repository" : "rabbitmq-erlang",
         "publish_to_package_repos": true}
 ]}

@@ -89,7 +89,7 @@ jobs:
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: "package-sources"
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
@@ -137,7 +137,7 @@ jobs:
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
           path: "package-sources"
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
@@ -188,14 +188,14 @@ jobs:
           tar -czvf erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz *.deb
       - name: Upload tarball as artifact
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}
           path: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
           retention-days: 7
       - name: Create a GitHub release
         if: ${{ inputs.publish_to_package_repos == true || inputs.publish_to_package_repos == 'true' }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: packages/erlang-${{ env.erlang_version }}-${{ inputs.distribution_name }}-${{ inputs.distribution_codename }}.tar.gz
           name: Erlang/OTP ${{ env.erlang_version }} for ${{ inputs.distribution_name }}/${{ inputs.distribution_codename }}

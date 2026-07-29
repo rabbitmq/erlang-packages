@@ -10,17 +10,21 @@ import os.path
 project = sys.argv[1]
 org_repository = sys.argv[2]
 
-configuration_filename = project + "-rpm-configuration.json"
 releases_filename = project + "-releases.json"
 
+packages = []
+for package_type in ["rpm", "deb"]:
+  configuration_filename = project + "-" + package_type + "-configuration.json"
+  if os.path.isfile(configuration_filename):
+    with open(configuration_filename, 'r') as f:
+      packages += json.load(f)["packages"]
 
-if os.path.isfile(configuration_filename) is False:
-  configuration_filename = project + "-deb-configuration.json"
-
-with open(configuration_filename, 'r') as f:
-  packages = json.load(f)["packages"]
-
-majors = list(map(lambda p: p["major"], packages))
+majors = []
+for p in packages:
+  if p.get("enabled", True) is False:
+    continue
+  if p["major"] not in majors:
+    majors.append(p["major"])
 
 print("Getting latest releases...")
 tags0 = requests.get(

@@ -41,6 +41,8 @@ workflow_template = workflow_template_file.read()
 workflow_template_file.close()
 
 for package in packages:
+    if package.get("enabled", True) is False:
+        continue
     major_version = package["major"]
     major_label = major_version.replace(".", "_")
     publish_to_package_repos = package["publish_to_package_repos"]

@@ -28,10 +28,15 @@ on:
         required: true
         type: string
       publish_to_package_repos:
-        description: "Should packages be published to Cloudsmith?"
+        description: "Should packages be published to Cloudsmith and GitHub?"
         type: string
         required: false
         default: "false"
+      publish_to_launchpad:
+        description: "Should source packages be uploaded to the Launchpad PPA (Ubuntu only)?"
+        type: string
+        required: false
+        default: "true"
 
 env:
   ERLANG_TAG: ${{ inputs.erlang_tag != '' && inputs.erlang_tag || github.event.client_payload.tag }}
@@ -42,15 +47,15 @@ jobs:
   update-package:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: "erlang-sources"
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -63,7 +68,7 @@ jobs:
         run: |
           git push origin OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
   build-source-package:
-    if: inputs.distribution_name == 'ubuntu'
+    if: ${{ inputs.distribution_name == 'ubuntu' && (inputs.publish_to_launchpad == true || inputs.publish_to_launchpad == 'true') }}
     runs-on: ubuntu-24.04
     needs: update-package
     container:
@@ -75,15 +80,15 @@ jobs:
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
       - name: Clone current repository
         # clones the current repository by default
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: "erlang-sources"
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}
@@ -115,7 +120,7 @@ jobs:
           apt-get update
           apt-get install -y --no-install-recommends ca-certificates gnupg openssh-client git
       - name: "Install autoconf 2.72 for Erlang 27"
-        if: ${{ inputs.erlang_major == '27' }}
+        if: ${{ inputs.erlang_major == '27' && inputs.distribution_version != '26.04' }}
         run: |
           apt-get install -y curl m4
           curl -fL https://launchpad.net/ubuntu/+archive/primary/+files/autoconf_2.72-3_all.deb -o "/tmp/autoconf.deb"
@@ -123,15 +128,15 @@ jobs:
           rm "/tmp/autoconf.deb"
       - name: Clone current repository
         # clones the current repository by default
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Check out Erlang OTP source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: erlang/otp
           ref: ${{ env.ERLANG_TAG }}
           path: "erlang-sources"
       - name: Check out Erlang Debian package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-debian-package
           ref: OTP-${{ inputs.erlang_major }}.x/${{ inputs.distribution_name }}/${{ inputs.distribution_version }}

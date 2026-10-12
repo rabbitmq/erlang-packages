@@ -22,4 +22,5 @@ jobs:
       distribution_version: "trixie"
       ppa_repository: "rabbitmq-erlang"
       publish_to_package_repos: "true"
+      publish_to_launchpad: "true"
     secrets: inherit

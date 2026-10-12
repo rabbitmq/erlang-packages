@@ -4,21 +4,23 @@
   { "name": "debian", "codename" : "trixie", "version" : "trixie" },
   { "name": "ubuntu", "codename" : "focal", "version" : "20.04" },
   { "name": "ubuntu", "codename" : "jammy", "version" : "22.04" },
-  { "name": "ubuntu", "codename" : "noble", "version" : "24.04" }
+  { "name": "ubuntu", "codename" : "noble", "version" : "24.04" },
+  { "name": "ubuntu", "codename" : "resolute", "version" : "26.04" }
 ],
   "packages" : [
     {"major": "27",
-        "distributions" : ["bookworm", "trixie", "jammy", "noble"],
+        "distributions" : ["bookworm", "trixie", "jammy", "noble", "resolute"],
         "ppa_repository" : "rabbitmq-erlang",
+        "publish_to_launchpad": true,
         "publish_to_package_repos": true},
     {"major": "28",
-        "enabled": false,
-        "distributions" : ["bookworm", "trixie", "jammy", "noble"],
-        "ppa_repository" : "rabbitmq-erlang",
-        "publish_to_package_repos": true},
+        "distributions" : ["bookworm", "trixie", "jammy", "noble", "resolute"],
+        "ppa_repository" : "rabbitmq-erlang-28",
+        "publish_to_launchpad": true,
+        "publish_to_package_repos": false},
     {"major": "29",
-        "enabled": false,
-        "distributions" : ["bookworm", "trixie", "jammy", "noble"],
-        "ppa_repository" : "rabbitmq-erlang",
-        "publish_to_package_repos": true}
+        "distributions" : ["bookworm", "trixie", "jammy", "noble", "resolute"],
+        "ppa_repository" : "rabbitmq-erlang-29",
+        "publish_to_launchpad": true,
+        "publish_to_package_repos": false}
 ]}

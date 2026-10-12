@@ -42,7 +42,7 @@ jobs:
       proceed: ${{ steps.guard.outputs.proceed }}
     steps:
       - name: Check out Erlang RPM package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-rpm
           ref: erlang-${{ env.ERLANG_MAJOR }}
@@ -69,15 +69,15 @@ jobs:
     container:
       image: pivotalrabbitmq/erlang-rpmbuild-${{ inputs.distribution_version }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Check out Erlang RPM package repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: rabbitmq/erlang-rpm
           ref: erlang-${{ env.ERLANG_MAJOR }}
           path: 'package-sources'
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
@@ -123,7 +123,7 @@ jobs:
           echo $version
           echo "erlang_version=$version" >> $GITHUB_ENV
       - name: Push to GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: packages/*
           name: ${{ env.erlang_version }}

@@ -22,4 +22,5 @@ jobs:
       distribution_version: "§distribution_version§"
       ppa_repository: "§ppa_repository§"
       publish_to_package_repos: "§publish_to_package_repos§"
+      publish_to_launchpad: "§publish_to_launchpad§"
     secrets: inherit

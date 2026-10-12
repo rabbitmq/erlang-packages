@@ -17,10 +17,10 @@
         "distributions" : ["bookworm", "trixie", "jammy", "noble", "resolute"],
         "ppa_repository" : "rabbitmq-erlang-28",
         "publish_to_launchpad": true,
-        "publish_to_package_repos": false},
+        "publish_to_package_repos": true},
     {"major": "29",
         "distributions" : ["bookworm", "trixie", "jammy", "noble", "resolute"],
         "ppa_repository" : "rabbitmq-erlang-29",
         "publish_to_launchpad": true,
-        "publish_to_package_repos": false}
+        "publish_to_package_repos": true}
 ]}

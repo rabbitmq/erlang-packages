@@ -21,6 +21,6 @@ jobs:
       distribution_codename: "resolute"
       distribution_version: "26.04"
       ppa_repository: "rabbitmq-erlang-28"
-      publish_to_package_repos: "false"
+      publish_to_package_repos: "true"
       publish_to_launchpad: "true"
     secrets: inherit
